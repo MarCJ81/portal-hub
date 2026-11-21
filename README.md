@@ -127,7 +127,7 @@ python3 uitest.py   # PASS 254  FAIL 0  (헤드리스 Chrome)
 
 ### 실서버(GitHub Pages) 재검증 — PASS 254 / FAIL 0 (2026-11-21, PWA 포함)
 
-- `https://marcj81.github.io/portal-hub/` **HTTP 200**(30,633B) · 게시 브랜치 `gh-pages`(main과 같은 트리) · Pages `status: built` · HTTPS 강제
+- `https://marcj81.github.io/portal-hub/` **HTTP 200**(30,635B) · 게시 브랜치 `gh-pages`(main과 같은 트리) · Pages `status: built` · HTTPS 강제
 - `manifest.webmanifest` 200(`application/manifest+json`) · `sw.js` 200(`application/javascript`) · `pwa.js` 200
 - 아이콘 4종 200 — `icon-192` 2,174B · `icon-512` 4,753B · `icon-maskable-512` 4,108B · `apple-touch-icon` 2,122B
 - 설치 버튼 클릭 → 네이티브 설치 창 `prompt()` 호출 1회 → 닫으면 그림 안내 모달, ESC·닫기·바깥 클릭으로 닫힘, `주소 복사` = `https://marcj81.github.io/portal-hub/`
@@ -136,7 +136,7 @@ python3 uitest.py   # PASS 254  FAIL 0  (헤드리스 Chrome)
 - 도구 **21종 카드 링크 21개 전부 HTTP 200** (`data.js`의 URL을 직접 GET)
 - 카드 21장 · 썸네일 21개 · `Pro AI 연결` 배지 4개 · 절약 월 432,000원 / 연 5,184,000원
 - 요청 전부 같은 도메인 → **콘솔 오류 0 · 페이지 오류 0 · 실패 요청 0 · 4xx/5xx 0 · 외부 요청 0건**
-- 가로 넘침 0 (1440 · 768 · 390) · DOMContentLoaded 264ms · load 672ms
+- 가로 넘침 0 (1440 · 768 · 390) · DOMContentLoaded 104ms · load 443ms
 - 캡처: `work/live-shots-portal/21-pwa.png`(설치 안내 모달) · `21-pwa-hero.png`(설치 버튼) · `21-pwa-iphone.png`(아이폰 안내)
 
 ---
