@@ -11,7 +11,7 @@
  * ==========================================================================*/
 'use strict';
 
-const VERSION = 'v2.0.0-bento';
+const VERSION = 'v2.1.0-hub26';
 const PREFIX = 'onetapl-hub-';
 const CACHE = PREFIX + VERSION;
 

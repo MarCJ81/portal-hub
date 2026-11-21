@@ -1,6 +1,6 @@
 /* ============================================================================
  * 원탭 도구 허브 (OneTap Tools) · 데이터
- * 24장 카드(무료 웹앱 23종 + 유료 B2B 오퍼 1종), 유료 대체 요금 참고표,
+ * 26장 카드(무료 웹앱 25종 + 유료 B2B 오퍼 1종), 유료 대체 요금 참고표,
  * 5단계 워크플로, B2B 납품 3단계.
  *
  * - 배포 전 확인: CONTACT_EMAIL 한 줄만 넣으면 '메일 앱으로 보내기'가 켜집니다.
@@ -18,11 +18,11 @@
   var CONTACT_LABEL = '운영자 메일';  // 화면에 보이는 수신자 표기
 
   var CATEGORIES = [
-    { id: 'all', label: '전체', note: '24장' },
+    { id: 'all', label: '전체', note: '26장' },
     { id: 'content', label: '콘텐츠·SNS', note: '8종' },
-    { id: 'commerce', label: '커머스·마케팅', note: '6종' },
+    { id: 'commerce', label: '커머스·마케팅', note: '7종' },
     { id: 'legal', label: '법률·세무·계약', note: '7종' },
-    { id: 'utility', label: '보안·유틸', note: '3종' }
+    { id: 'utility', label: '보안·유틸', note: '4종' }
   ];
 
   /* price: 1인 기준 월 참고액(원). 공개 요금제를 2026-11에 확인해 반올림한 값. */
@@ -273,6 +273,28 @@
       tagline: 'Price one request across OpenAI, Anthropic, Google and DeepSeek models, then generate a spec-shaped llms.txt.',
       features: ['Per-request to yearly cost', 'Budget reverse calculation', 'llms.txt generator'],
       replaces: { name: 'LLM pricing dashboard', price: 7000 }
+    },
+    {
+      id: 'proof-of-work-report', no: 25, name: '작업 증빙 리포트', en: 'Proof of Work Report',
+      slug: 'proof-of-work-report', url: 'https://marcj81.github.io/proof-of-work-report/', live: true,
+      category: 'commerce', thumb: 'proof', badge: 'NEW',
+      bento: { cols: 2, rows: 1, skin: 'light' },
+      metric: { value: 'A4 1쪽', label: '공유 링크 + PDF' },
+      short: '이번 달 뭘 했는지, 증빙 링크와 PDF 한 장으로 보냅니다.',
+      tagline: '완료 항목·소요시간·근거 링크·다음 주 계획을 한 장으로 정리해 공유 링크와 PDF로 보냅니다.',
+      features: ['완료·근거 링크 증빙', '공유 링크 한 줄', 'A4 1쪽 PDF'],
+      replaces: { name: '대행 리포트 툴 구독', price: 12000 }
+    },
+    {
+      id: 'price-radar-kr', no: 26, name: '깜깜이 시세 레이더', en: 'Price Radar KR',
+      slug: 'price-radar-kr', url: 'https://marcj81.github.io/price-radar-kr/', live: true,
+      category: 'utility', thumb: 'priceradar', badge: 'NEW',
+      bento: { cols: 2, rows: 1, skin: 'light' },
+      metric: { value: '54', label: '6업종 시세 품목' },
+      short: '수리·청소·치과·이사 시세를 최저·평균·최고가로 비교합니다.',
+      tagline: '수리·청소·치과·이사 6업종 54품목 시세를 보여 주고, 받은 견적이 바가지인지 판정합니다.',
+      features: ['6업종 54품목 시세', '받은 견적 판정', 'JSON·CSV 내보내기'],
+      replaces: { name: '시세 조회·견적 비교 서비스', price: 11000 }
     }
   ];
 
@@ -296,10 +318,10 @@
       output: '원고 1편 · 카드 8장 · 숏폼 1편'
     },
     {
-      no: '04', title: '체험단·링크·견적서 영업',
-      lead: '만든 것을 팝니다. 체험단으로 후기를 모으고, 링크와 견적서로 문의를 받습니다.',
-      appIds: ['influencer-campaign-board', 'linkhub-studio', 'agency-proposal-maker'],
-      output: '문의 폼 1개 · 견적서 1부'
+      no: '04', title: '체험단·시세·견적서 영업',
+      lead: '만든 것을 팝니다. 체험단으로 후기를 모으고, 시세를 확인해 견적을 내고, 링크와 견적서로 문의를 받습니다.',
+      appIds: ['influencer-campaign-board', 'price-radar-kr', 'linkhub-studio', 'agency-proposal-maker', 'proof-of-work-report'],
+      output: '문의 폼 1개 · 견적서 1부 · 증빙 리포트 1부'
     },
     {
       no: '05', title: '계약·급여·세금 정산',
@@ -333,7 +355,7 @@
   var FAQ = [
     {
       q: '정말 무료인가요? 결제 화면이 안 나옵니다.',
-      a: '무료 도구 23종은 회원가입·결제·서버가 없습니다. 페이지 파일이 브라우저에서 도는 것이 전부라 운영 비용이 0원이고, 그래서 값을 받을 것이 없습니다. 광고와 추적 스크립트도 넣지 않았습니다. 11번 원탭 백오피스만 사람이 붙는 유료 대행 서비스라 카드에 요금을 적어 두었습니다.'
+      a: '무료 도구 25종은 회원가입·결제·서버가 없습니다. 페이지 파일이 브라우저에서 도는 것이 전부라 운영 비용이 0원이고, 그래서 값을 받을 것이 없습니다. 광고와 추적 스크립트도 넣지 않았습니다. 11번 원탭 백오피스만 사람이 붙는 유료 대행 서비스라 카드에 요금을 적어 두었습니다.'
     },
     {
       q: '입력한 내용은 어디로 가나요?',
@@ -370,7 +392,7 @@
       total: APPS.length,
       free: APPS.filter(function (a) { return !a.offer; }).length,
       live: APPS.filter(function (a) { return a.live; }).length,
-      version: '2.0.0',
+      version: '2.1.0',
       checked: '2026-11-22'
     }
   };
