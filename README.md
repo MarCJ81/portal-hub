@@ -5,6 +5,7 @@
 
 - 서버·빌드·계정·광고·추적 없음. `index.html`을 열면 바로 동작합니다.
 - 입력값은 브라우저 `localStorage`에만 남고, 이 페이지는 **외부 요청 0건**입니다(폰트·아이콘·썸네일·질감 전부 로컬).
+- **폰 홈 화면에 앱처럼 설치(PWA)** — `manifest.webmanifest` + `sw.js` + 192/512/180 아이콘. 안드로이드·데스크톱 크롬은 버튼 한 번, 아이폰 사파리는 그림 안내 3단계.
 - 개인정보·블로그명·실명은 파일 어디에도 넣지 않았습니다(`test.js`가 검사).
 
 ```bash
@@ -13,8 +14,8 @@ python3 -m http.server 8000
 # → http://127.0.0.1:8000
 
 # 검증(내부 QA 스크립트 — 공개 저장소에는 넣지 않습니다)
-node test.js        # PASS 382  FAIL 0
-python3 uitest.py   # PASS 189  FAIL 0  (헤드리스 Chrome)
+node test.js        # PASS 445  FAIL 0
+python3 uitest.py   # PASS 254  FAIL 0  (헤드리스 Chrome)
 ```
 
 ---
@@ -29,6 +30,7 @@ python3 uitest.py   # PASS 189  FAIL 0  (헤드리스 Chrome)
 | 03 | 5단계 | 주제 발굴 → 검수 → 제작 → 영업 → 정산, 단계별 도구 3~4개로 카드 이동 | `data.js` `steps` |
 | 04 | 커스텀 제작 | 기본형·스튜디오형·풀커스텀 + **빠른 견적 문의 폼**(동의 필수, 문안 복사/메일) | `data.js` `tiers` + `core.js` `validateLead()` |
 | 05 | FAQ | 돈·데이터·AI 연결·법적 판단 5문항 | `data.js` `faq` |
+| 06 | 앱 설치 | 히어로의 `📱 앱처럼 설치` 버튼 → 안드로이드·크롬은 네이티브 설치 창, iOS는 그림 안내 모달 | `pwa.js` + `manifest.webmanifest` + `sw.js` |
 
 ### 절약액 계산
 
@@ -43,6 +45,15 @@ python3 uitest.py   # PASS 189  FAIL 0  (헤드리스 Chrome)
 - 전송 버튼이 아니라 **문안을 만드는** 버튼입니다. 만든 문안을 `문안 복사`하거나, 수신 주소가 설정돼 있으면 `메일 앱으로 보내기`(`mailto:`)로 엽니다.
 - 검증 실패 시 첫 오류로 포커스가 이동하고, 오류는 `role="alert"`로 읽힙니다.
 - `CONTACT_EMAIL`은 공개 노출을 피하려고 **빈 값(복사 전용)** 으로 둡니다.
+
+### 홈 화면 설치(PWA)
+
+- **버튼 한 번으로 설치(안드로이드 크롬·삼성 인터넷·데스크톱 크롬)**: `beforeinstallprompt`를 잡아 두었다가 `📱 앱처럼 설치` 클릭 시 브라우저 기본 설치 창을 그대로 띄웁니다. 설치되면 버튼이 `✓ 앱처럼 설치됨`으로 바뀝니다.
+- **아이폰 사파리(자동 설치 창 없음)**: 같은 버튼을 누르면 **그림 안내 모달**이 열립니다 — `사파리 하단 공유(□↑) → 홈 화면에 추가 → 추가` 3단계, 현재 주소 `주소 복사` 버튼 포함. 안드로이드·PC로 열면 각 플랫폼에 맞는 안내로 자동 교체됩니다.
+- **이미 앱으로 열린 경우**(`display-mode: standalone`): 안내를 띄우지 않고 버튼이 `✓ 앱 모드로 실행 중`(비활성) 상태로 표시됩니다.
+- **오프라인·즉시 실행**: `sw.js`가 같은 오리진의 정적 자산만 캐시합니다. 문서는 네트워크 우선 → 실패 시 캐시, 나머지는 캐시 우선 + 조용한 갱신. **외부 오리진 요청은 가로채지 않고**, `?embed` 요청은 그대로 네트워크로 보냅니다.
+- **아이콘**: `make-icons.py`(PIL, 4배 슈퍼샘플링)로 크림 에디토리얼 톤의 `1` 엠블럼을 생성 — `icon-192`, `icon-512`, `icon-maskable-512`(안전영역 72%), `apple-touch-icon`(180, 불투명 RGB).
+- `manifest.webmanifest`: `name 원탭 도구 허브` · `short_name 원탭도구` · `start_url/scope ./`(하위 경로 배포에서도 동작) · `display standalone` · 배경/테마 `#F3EADD`.
 
 ---
 
@@ -94,7 +105,7 @@ python3 uitest.py   # PASS 189  FAIL 0  (헤드리스 Chrome)
 
 ## 4. 검증 결과 (2026-11-21) — 내부 QA 스크립트 측정, 공개 저장소에는 미포함
 
-### `node test.js` → PASS 382 / FAIL 0
+### `node test.js` → PASS 445 / FAIL 0
 
 - 데이터: 21종·중복 없음·번호 1~21·카테고리 합 21·라이브 21종·URL 규칙·썸네일 21종·Pro 4종·16~21번 저장소 이름
 - 코어: 검색 순위(“세금”→세금 계산기, “급여”→급여명세서, “퇴직금”→퇴직금·연차, “리뷰”→리뷰 답글, “숏폼”→숏폼, “썸네일”→이미지, “원고”→원고, “피싱”·“개인정보”→보안 점검기, “누끼”·“부가세”·“연차” 동의어), 필터, 절약액(월 432,000 / 연 5,184,000, 연=월×12, 선택 0개=0원), 금액 표기, 시각 형식
@@ -102,12 +113,15 @@ python3 uitest.py   # PASS 189  FAIL 0  (헤드리스 Chrome)
 - 정적: h1 1개, JSON-LD 21항목 파싱·`numberOfItems` 21, 외부 script/link/img/iframe 0, `fetch`·`XMLHttpRequest` 0, CSS `url(http` 0, 추적 스크립트 0, 폰트 4종 woff2 매직바이트
 - 브랜드: 옛 브랜드명 **0건**(8개 파일), `원탭 도구 허브`·`OneTap Tools` 탭 제목·og:site_name·JSON-LD·푸터 반영
 - 프라이버시: 실명·블로그명·계정 핸들·전화번호·메일 서비스 도메인 **0건**
+- PWA: `manifest.webmanifest` 파싱·name/short_name/start_url/scope/display/색·아이콘 4종(192·512·maskable·180) 규격(픽셀·불투명 RGB), 헤드의 manifest·apple-touch-icon·apple-mobile-web-app-capable·theme-color, 버튼·모달 마크업, `pwa.js`의 설치 프롬프트·standalone 감지·iOS 문구·클립보드·ESC·SW 등록, `sw.js`의 캐시 버전·같은 오리진 한정·`?embed` 우회·문서 네트워크 우선·외부 URL 0건
 
-### `python3 uitest.py` → PASS 189 / FAIL 0 (Chrome 헤드리스)
+### `python3 uitest.py` → PASS 254 / FAIL 0 (Chrome 헤드리스)
 
 - 데스크톱 1440×900: h1 3줄, 영수증 줄 합 = 합계(432,000), 도장이 안내문을 가리지 않음, 카드 21장·3열·Pro 배지 4개, 필터 5종, 검색·지우기·결과 없음, 라이브만 21장, `/` 키 포커스, 절약 표 21행·체크 시 월/연/영수증 동시 갱신·0원·복귀, 5단계 클릭 → 카드 강조·스크롤, 폼 오류 5종 → 채움 → 동의 → 문안 생성 → 클립보드 일치 → 수신 주소를 넣었을 때만 mailto 버튼, 내비 앵커 오프셋, 카드에서 폼으로 도구 자동 선택, FAQ, 폰트 로드, 라벨 누락 0, 포커스 링
 - 모바일 390×844: 카드 21장 1열, 칩 줄바꿈, 히어로 버튼 전폭, 표 3번째 열 숨김, 폼 1열, 넘침 0
 - 768×1024: 카드 2열, 넘침 0
+- PWA: manifest·sw·pwa·아이콘 4종 HTTP 200, 설치 버튼 44px↑, `beforeinstallprompt` 가로채기 → 클릭 시 `prompt()` 호출 1회 → 닫힘 시 안내 모달, 모달 열림/ESC/닫기/바깥 클릭·초점 이동·주소 복사·`aria-modal`, 아이폰 UA에서 `사파리·공유(□↑)·홈 화면에 추가` 문구, standalone 컨텍스트에서 `앱 모드로 실행 중`+모달 안 열림, **오프라인 재실행에서도 제목·히어로·카드 21장**, Chrome `Page.getInstallabilityErrors` 정상(시크릿 모드 외 0)
+- 모달을 연 상태에서도 가로 넘침 0 (데스크톱·390·아이폰 UA)
 - 전 화면 공통: **콘솔 오류 0 · 페이지 오류 0 · 실패 요청 0 · 4xx/5xx 0 · 외부 요청 0건**
 - 캡처: `preview-desktop.png`(1440, 전체 높이) · `preview-mobile.png`(390, 전체 높이)
 
@@ -167,10 +181,14 @@ portal-hub/
   thumbs.js       21종 카드 썸네일 SVG 생성기 (외부 이미지 0)
   app.js          렌더링·상태·이벤트
   privacy.html    개인정보처리방침 (localStorage·문의 폼·AI 연결·보관 3개월)
-  test.js         단위·정적 검사 382건
-  uitest.py       Chrome 실브라우저 검사 189건 + 미리보기 캡처(16,384px 초과분 구간 캡처·스티치)
+  pwa.js          홈 화면 설치 — beforeinstallprompt·iOS 안내 모달·주소 복사·SW 등록
+  manifest.webmanifest  PWA 매니페스트 (standalone · 크림 테마 · 아이콘 4종)
+  sw.js           Service Worker — 같은 오리진 정적 자산 캐시, 문서 네트워크 우선, ?embed 우회
+  test.js         단위·정적 검사 445건
+  uitest.py       Chrome 실브라우저 검사 254건 + 미리보기 캡처(16,384px 초과분 구간 캡처·스티치)
+  make-icons.py   PWA 아이콘 생성기(PIL) — 공개 저장소에는 넣지 않습니다
   preview-desktop.png / preview-mobile.png
-  assets/favicon.svg · assets/fonts/*
+  assets/favicon.svg · assets/fonts/* · assets/icons/(192·512·maskable·apple 180)
   .nojekyll
 ```
 
@@ -179,4 +197,5 @@ portal-hub/
 - **21종 모두 `live: true`** 이고 2026-11-21 실측으로 21개 주소가 전부 HTTP 200 입니다.
 - 문의 폼은 서버가 없으므로 **자동 접수되지 않습니다**. 문안을 만들어 방문자가 직접 보내는 방식이고, 수신 주소를 넣기 전에는 `메일 앱으로 보내기`가 숨겨집니다.
 - 요금·법령·세율은 참고값입니다. 페이지 하단과 FAQ에 법률·세무 자문이 아니라는 점을 적었습니다.
+- **PWA 주의**: `sw.js`는 배포마다 `VERSION`을 올려야 방문자 캐시가 새 파일로 바뀝니다. `file://`로 열면 Service Worker는 등록되지 않지만(보안 문맥 아님) 설치 버튼은 그대로 동작합니다. 아이폰은 애플 정책상 설치 팝업이 없어 그림 안내만 제공합니다.
 - 다크 모드는 넣지 않았습니다. 크림 에디토리얼 톤이 이 페이지의 정체성이라 임의로 반전하지 않았고, `prefers-reduced-motion`만 존중합니다.

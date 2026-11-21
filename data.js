@@ -290,7 +290,7 @@
     meta: {
       total: APPS.length,
       live: APPS.filter(function (a) { return a.live; }).length,
-      version: '1.2.0',
+      version: '1.3.0',
       checked: '2026-11-21'
     }
   };

@@ -795,3 +795,92 @@ button{font:inherit;color:inherit}
   .topbar,.filter-bar,.hero-actions,.lead-actions,.stamp{display:none}
   body::before{display:none}
 }
+
+/* ============================================================================
+   홈 화면 설치(PWA) · 버튼 + 그림 안내 모달
+   ==========================================================================*/
+.install-btn{
+  background:var(--surface);color:var(--accent);border-color:var(--accent);
+}
+.install-btn:hover{background:rgba(168,67,31,.08);border-color:var(--accent);color:var(--accent)}
+.install-btn.is-ready{
+  background:var(--accent);border-color:var(--accent);color:var(--accent-ink);
+}
+.install-btn.is-ready:hover{background:#8f3617;border-color:#8f3617;color:var(--accent-ink)}
+.install-btn.is-installed,
+.install-btn.is-appmode{
+  background:transparent;border-color:var(--line);color:var(--sub);cursor:default;
+}
+.install-btn.is-installed:hover,
+.install-btn.is-appmode:hover{background:transparent;border-color:var(--line);color:var(--sub)}
+.install-btn[aria-busy="true"]{opacity:.6}
+.install-btn span[aria-hidden]{font-size:1.02em;line-height:1;font-family:'Apple Color Emoji','Segoe UI Emoji','Noto Color Emoji','Android Emoji',sans-serif}
+
+html.install-open{overflow:hidden}
+.install-modal{
+  position:fixed;inset:0;z-index:120;display:grid;place-items:center;
+  padding:24px;background:rgba(32,24,17,.5);backdrop-filter:blur(2px);
+  animation:install-fade .18s ease-out;
+}
+.install-modal[hidden]{display:none}
+.install-sheet{
+  position:relative;width:min(560px,100%);max-height:calc(100vh - 40px);overflow:auto;
+  background:var(--surface);border:1px solid var(--ink);border-radius:3px;
+  box-shadow:0 24px 60px rgba(32,24,17,.32);
+  padding:30px 32px 26px;
+}
+.install-x{
+  position:absolute;top:10px;right:12px;width:32px;height:32px;line-height:1;
+  border:0;background:none;color:var(--sub);font-size:24px;cursor:pointer;border-radius:2px;
+}
+.install-x:hover{color:var(--ink);background:rgba(51,40,30,.06)}
+.install-kicker{
+  font-size:10px;letter-spacing:.2em;color:var(--accent);font-weight:600;margin-bottom:8px;
+}
+.install-sheet h2{
+  font-family:var(--serif);font-size:26px;line-height:1.32;letter-spacing:-.01em;
+  margin-bottom:14px;font-weight:400;
+}
+.install-figure{
+  border:1px solid var(--line);background:var(--bg);border-radius:2px;
+  padding:10px 12px 4px;margin-bottom:16px;
+}
+.install-svg{display:block;width:100%;height:auto}
+.ins-share{transform-box:fill-box;transform-origin:center}
+.install-modal.is-play .ins-share{animation:inst-pulse 1s ease-in-out 2}
+.install-steps{list-style:none;margin:0 0 16px;padding:0;display:grid;gap:9px}
+.install-steps li{display:flex;gap:10px;align-items:flex-start;font-size:14px;line-height:1.6;color:var(--ink-80)}
+.install-steps b{color:var(--ink);font-weight:600}
+.install-step-no{
+  flex:0 0 auto;width:20px;height:20px;margin-top:2px;border-radius:50%;
+  background:var(--accent);color:var(--accent-ink);
+  font-size:11px;font-weight:700;display:grid;place-items:center;line-height:1;
+}
+.install-url-row{
+  display:grid;grid-template-columns:1fr auto;gap:8px;align-items:center;
+  border-top:1px solid var(--line);padding-top:14px;
+}
+.install-url-label{grid-column:1/-1;font-size:10px;letter-spacing:.14em;text-transform:uppercase;color:var(--sub)}
+.install-url{
+  min-width:0;width:100%;border:1px solid var(--line);border-radius:2px;background:var(--surface-2);
+  padding:9px 11px;font-size:12.5px;color:var(--ink-80);font-family:inherit;
+}
+.install-copy[data-copied]{background:var(--accent);border-color:var(--accent);color:var(--accent-ink)}
+.install-note{margin-top:14px;font-size:12px;line-height:1.7;color:var(--sub)}
+.install-foot{margin-top:10px;text-align:right}
+@keyframes install-fade{from{opacity:0}to{opacity:1}}
+@keyframes inst-pulse{0%,100%{transform:scale(1)}50%{transform:scale(1.28)}}
+@media (max-width:680px){
+  .install-modal{padding:0;align-items:end}
+  .install-sheet{
+    width:100%;max-height:92vh;border-left:0;border-right:0;border-bottom:0;
+    border-radius:14px 14px 0 0;padding:24px 20px 22px;
+  }
+  .install-sheet h2{font-size:22px;padding-right:26px}
+  .install-figure{padding:8px 6px 2px}
+  .install-steps li{font-size:13.5px}
+}
+@media (prefers-reduced-motion:reduce){
+  .install-modal{animation:none}
+  .install-modal.is-play .ins-share{animation:none}
+}
