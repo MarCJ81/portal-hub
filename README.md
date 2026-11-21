@@ -111,13 +111,16 @@ python3 uitest.py   # PASS 189  FAIL 0  (헤드리스 Chrome)
 - 전 화면 공통: **콘솔 오류 0 · 페이지 오류 0 · 실패 요청 0 · 4xx/5xx 0 · 외부 요청 0건**
 - 캡처: `preview-desktop.png`(1440, 전체 높이) · `preview-mobile.png`(390, 전체 높이)
 
-### 실서버(GitHub Pages) 재검증 — PASS 197 / FAIL 0
+### 실서버(GitHub Pages) 재검증 — PASS 31 / FAIL 0
 
-- `https://marcj81.github.io/portal-hub/` **HTTP 200**, HTTPS 강제, `privacy.html` 200, CSS·JS·폰트 8종 200
+- `https://marcj81.github.io/portal-hub/` **HTTP 200**(25,163B), 게시 브랜치 `gh-pages`, Pages `status: built`
+- 도구 **21종 카드 링크 21개 전부 HTTP 200** (`data.js`의 URL을 직접 GET)
+- 카드 21장 · 썸네일 SVG 21개(설명 21개 고유) · `Pro AI 연결` 배지 4개 · 번호 01~21 · 카드 링크 = 데이터 URL
+- h1 `무료 도구 21선` · 상단 `21종 라이브` · 절약 월 432,000원 / 연 5,184,000원 · 영수증 `외 17종` · 5단계 버튼 16개 · 문의 선택지 24개 · JSON-LD `numberOfItems` 21
 - 요청 11건 전부 같은 도메인 → **콘솔 오류 0 · 페이지 오류 0 · 실패 요청 0 · 4xx/5xx 0 · 외부 요청 0건**
-- 가로 넘침 0 (1440 · 768 · 390), 카드 21장, 절약 계산기 월 432,000원 → 전체 해제 0원 복귀, 문의 폼 오류 5종 → 문안 생성 → 클립보드 일치
-- 도구 21종 카드 링크 **21개 모두 HTTP 200**
-- DOMContentLoaded 270ms · load 675ms
+- 가로 넘침 0 (1440 · 768 · 390), 모바일 카드 21장
+- DOMContentLoaded 113ms · load 578ms
+- 캡처: `work/live-shots-portal/21-hero.png` · `21-cards.png`(카드 그리드 전체) · `21-new-cards.png`(신규 4종)
 
 ---
 
