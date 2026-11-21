@@ -44,12 +44,18 @@
     '원고': ['글쓰기', '블로그', '스레드', '상세페이지'],
     '이미지': ['썸네일', '누끼', '배경'],
     '누끼': ['이미지', '썸네일', '배경'],
-    '해외': ['english', 'en', '달러']
+    '해외': ['english', 'en', '달러'],
+    '벡터': ['svg', 'eps', '인쇄', '변환', '로고'],
+    'svg': ['벡터', 'eps', '변환'],
+    '연말정산': ['13월', '환급', '공제', '카드', '연금저축'],
+    '환급': ['연말정산', '13월', '공제'],
+    '백오피스': ['대행', '당일', '리뷰', '블로그'],
+    '대행': ['백오피스', '견적서', '리뷰']
   };
 
   function haystack(app) {
     return norm([
-      app.name, app.en, app.tagline, (app.features || []).join(' '),
+      app.name, app.en, app.short, app.tagline, (app.features || []).join(' '),
       app.replaces && app.replaces.name, app.category,
       app.lang === 'en' ? 'english en 달러 해외' : '한국어 국내'
     ].join(' '));
@@ -110,13 +116,19 @@
     return out;
   }
 
-  /* 선택한 도구의 유료 대체 요금 합계 — selected 를 주지 않으면 전체 */
+  /* 유료 서비스 안내 카드(offer)는 무료 도구가 아니므로 절약액 계산에서 빠집니다. */
+  function isFree(a) { return !!(a && !a.offer && a.replaces && a.replaces.price > 0); }
+
+  function freeApps(apps) { return apps.filter(isFree); }
+
+  /* 선택한 도구의 유료 대체 요금 합계 — selected 를 주지 않으면 무료 도구 전체 */
   function savings(apps, selected) {
-    var ids = (selected == null) ? apps.map(function (a) { return a.id; }) : selected;
+    var pool = freeApps(apps);
+    var ids = (selected == null) ? pool.map(function (a) { return a.id; }) : selected;
     var want = {};
     ids.forEach(function (id) { want[id] = true; });
-    var rows = apps.filter(function (a) { return want[a.id]; });
-    var monthly = rows.reduce(function (s, a) { return s + (a.replaces ? a.replaces.price : 0); }, 0);
+    var rows = pool.filter(function (a) { return want[a.id]; });
+    var monthly = rows.reduce(function (s, a) { return s + a.replaces.price; }, 0);
     return {
       count: rows.length,
       monthly: monthly,
@@ -207,6 +219,7 @@
   var api = {
     trim: trim, norm: norm, terms: terms, scoreApp: scoreApp, searchApps: searchApps,
     filterApps: filterApps, savings: savings, categoryCounts: categoryCounts,
+    isFree: isFree, freeApps: freeApps,
     fmtKRW: fmtKRW, nowStamp: nowStamp, validateLead: validateLead,
     leadSummary: leadSummary, buildLeadText: buildLeadText, buildMailto: buildMailto,
     liveCount: liveCount, stepAppIds: stepAppIds,

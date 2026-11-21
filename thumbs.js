@@ -543,6 +543,87 @@
         '<text class="t-text t-text-sub" x="22" y="196" font-size="8">배경 투명화 · 그림자 · 합성</text>',
         '사진 캔버스와 투명 격자, 규격 칩이 있는 썸네일'
       );
+    },
+
+    /* 02 벡터 — 베지어 곡선 + 노드 + 포맷 칩 */
+    vector: function () {
+      var chips = ['SVG', 'EPS', 'PDF', 'AI'].map(function (t, i) {
+        return '<rect class="' + (i === 0 ? 't-accent' : 't-card') + '" x="' + (206 + (i % 2) * 46) + '" y="' + (36 + Math.floor(i / 2) * 24) + '" width="40" height="18" rx="9"/>' +
+          '<text class="' + (i === 0 ? 't-text t-text-paper' : 't-text t-text-sub') + '" x="' + (226 + (i % 2) * 46) + '" y="' + (49 + Math.floor(i / 2) * 24) + '" font-size="8" text-anchor="middle">' + t + '</text>';
+      }).join('');
+      var nodes = [[44, 152], [104, 62], [166, 140], [186, 78]].map(function (p) {
+        return '<circle class="t-paper-fill" cx="' + p[0] + '" cy="' + p[1] + '" r="5"/>' +
+          '<circle class="t-stroke-accent" cx="' + p[0] + '" cy="' + p[1] + '" r="5" fill="none" stroke-width="1.6"/>';
+      }).join('');
+      return wrap(
+        '<rect class="t-card" x="20" y="20" width="178" height="166" rx="8"/>' +
+        '<path class="t-accent" d="M44 152C104 62 166 140 186 78" fill="none" stroke="none"/>' +
+        '<path d="M44 152C104 62 166 140 186 78" fill="none" class="t-stroke-accent" stroke-width="3" stroke-linecap="round"/>' +
+        '<path d="M44 152C74 104 128 100 186 78" fill="none" class="t-stroke-line" stroke-width="1" stroke-dasharray="4 4"/>' +
+        nodes +
+        '<text class="t-text t-text-ink" x="32" y="36" font-size="9">BEZIER FIT</text>' +
+        chips +
+        '<rect class="t-rule" x="32" y="132" width="120" height="1"/>' +
+        '<text class="t-text t-text-sub" x="32" y="150" font-size="7">PNG 2.4MB → SVG 38KB</text>' +
+        '<text class="t-text t-text-accent" x="32" y="168" font-size="8">인쇄 300dpi · 색상 12색</text>' +
+        '<text class="t-text t-text-sub" x="206" y="112" font-size="7">배경 투명</text>' +
+        '<rect class="t-accent-soft" x="206" y="120" width="88" height="52" rx="4"/>' +
+        '<text class="t-text t-text-ink" x="214" y="142" font-size="9">로고 분리</text>' +
+        '<text class="t-text t-text-sub" x="214" y="158" font-size="7">누끼 · 곡선 정리</text>',
+        '베지어 곡선과 노드, SVG·EPS 포맷 칩이 있는 썸네일'
+      );
+    },
+
+    /* 03 연말정산 — 12월 달력 + 역산 화살표 + 13 */
+    yearend: function () {
+      var cells = [];
+      for (var r = 0; r < 3; r++) {
+        for (var c = 0; c < 4; c++) {
+          cells.push('<rect class="t-faint" x="' + (30 + c * 26) + '" y="' + (62 + r * 26) + '" width="20" height="20" rx="3"/>');
+        }
+      }
+      return wrap(
+        '<rect class="t-card" x="20" y="20" width="150" height="170" rx="8"/>' +
+        '<text class="t-text t-text-sub" x="30" y="44" font-size="9">12월</text>' +
+        '<text class="t-text t-text-ink" x="30" y="58" font-size="8">31일까지</text>' +
+        cells.join('') +
+        '<rect class="t-accent" x="108" y="88" width="20" height="20" rx="3"/>' +
+        '<text class="t-text t-text-paper" x="118" y="102" font-size="8" text-anchor="middle">31</text>' +
+        '<path class="t-stroke-accent" d="M186 166h82" stroke-width="2" fill="none"/>' +
+        '<path d="M258 161l10 5-10 5z" class="t-accent"/>' +
+        '<text class="t-text t-text-sub" x="186" y="152" font-size="8">지금 넣으면</text>' +
+        '<text class="t-text t-text-ink" x="186" y="140" font-size="22" font-weight="600">+13월</text>' +
+        '<text class="t-text t-text-sub" x="186" y="188" font-size="7">카드 25% · 연금 900만</text>' +
+        '<rect class="t-accent-soft" x="186" y="44" width="104" height="72" rx="6"/>' +
+        '<text class="t-text t-text-ink" x="196" y="64" font-size="9">환급액</text>' +
+        '<text class="t-text t-text-ink" x="196" y="94" font-size="20" font-weight="600">83.4만</text>' +
+        '<text class="t-text t-text-accent" x="196" y="108" font-size="7">지금 실행 시</text>',
+        '12월 달력과 역산 화살표, 환급액 숫자가 있는 썸네일'
+      );
+    },
+
+    /* 11 백오피스 — 카톡 접수 → 당일 납품 체크리스트 */
+    backoffice: function () {
+      var items = ['리뷰 답글 20건', '블로그 원고 4편', '카드뉴스 4장', '견적서 2건'].map(function (t, i) {
+        return '<rect class="t-card" x="150" y="' + (34 + i * 30) + '" width="150" height="24" rx="4"/>' +
+          '<path d="M158 ' + (46 + i * 30) + 'l4 4 7-7" class="t-stroke-accent" fill="none" stroke-width="2"/>' +
+          '<text class="t-text t-text-sub" x="176" y="' + (50 + i * 30) + '" font-size="8">' + t + '</text>';
+      }).join('');
+      return wrap(
+        '<rect class="t-card" x="20" y="44" width="112" height="132" rx="10"/>' +
+        '<path d="M42 96c0-16 14-26 34-26s34 10 34 26-14 24-34 24l-14-2-12 8 3-12c-7-5-11-11-11-18z" class="t-accent-soft"/>' +
+        '<text class="t-text t-text-ink" x="62" y="92" font-size="9">카톡 접수</text>' +
+        '<text class="t-text t-text-sub" x="62" y="106" font-size="7" text-anchor="middle">하루 3분</text>' +
+        '<text class="t-text t-text-sub" x="30" y="52" font-size="7">사장님 →</text>' +
+        '<path class="t-stroke-accent" d="M136 108h10" stroke-width="2" fill="none"/>' +
+        '<path d="M142 103l8 5-8 5z" class="t-accent"/>' +
+        '<text class="t-text t-text-ink" x="150" y="24" font-size="9">당일 납품 · 법규 검수</text>' +
+        items +
+        '<text class="t-text t-text-sub" x="150" y="162" font-size="7">아이디·비밀번호 없음</text>' +
+        '<text class="t-text t-text-accent" x="150" y="180" font-size="9" font-weight="600">월 39만 원</text>' +
+        '<text class="t-text t-text-sub" x="20" y="200" font-size="7">사람이 붙는 유료 대행 서비스</text>',
+        '카톡 접수 말풍선과 당일 납품 체크리스트가 있는 썸네일'
+      );
     }
   };
 

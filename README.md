@@ -1,204 +1,99 @@
-# 원탭 도구 허브 (OneTap Tools) · portal-hub
+# 원탭 도구 허브 (OneTap Tools)
 
-무료 웹앱 21종(국내 18 · 해외 3)을 한 장에 모은 **통합 랜딩 허브**입니다.
-무료 도구로 들어와 **절약액 → 5단계 워크플로 → B2B 커스텀 제작 문의**로 이어지는 동선 하나를 목표로 만들었습니다.
+무료 웹앱 23종과 유료 B2B 오퍼 1장을 한 화면에 모은 안내 페이지입니다.
+서버·가입·결제 없이 브라우저에서만 돌아가고, 입력값은 기기를 떠나지 않습니다.
 
-- 서버·빌드·계정·광고·추적 없음. `index.html`을 열면 바로 동작합니다.
-- 입력값은 브라우저 `localStorage`에만 남고, 이 페이지는 **외부 요청 0건**입니다(폰트·아이콘·썸네일·질감 전부 로컬).
-- **폰 홈 화면에 앱처럼 설치(PWA)** — `manifest.webmanifest` + `sw.js` + 192/512/180 아이콘. 안드로이드·데스크톱 크롬은 버튼 한 번, 아이폰 사파리는 그림 안내 3단계.
-- 개인정보·블로그명·실명은 파일 어디에도 넣지 않았습니다(`test.js`가 검사).
+- 라이브: <https://marcj81.github.io/portal-hub/>
+- 버전: **v2.0.0-bento** (2026-11-22)
+- 구성: `index.html` · `privacy.html` · `styles.css` · `data.js` · `core.js` · `thumbs.js` · `app.js` · `pwa.js` · `sw.js` · `manifest.webmanifest` · `assets/`
+
+## 이번 버전에서 바뀐 것 (v1.3.0 → v2.0.0)
+
+디자인을 **Crisp Bento(A) + 다크 글래스 스튜디오(C) + 임팩트 타이포·배지(B)** 투트랙으로 전면 교체했습니다.
+
+| 항목 | 이전 | 지금 |
+| --- | --- | --- |
+| 팔레트 | 크림·테라코타 `#F3EADD` / `#A8431F` | 순백 벤토 `#FAFAFA` / 코발트 `#2F5BFF` (스튜디오는 `#8B5CF6`) |
+| 카드 | 같은 크기 21장 · 7줄 벽 | **24장 벤토** — 히어로 1(2×2) · 와이드 6(2×1) · 다크 스튜디오 4 · 유료 오퍼 1 · 기본 12 |
+| 제목 | 세리프 50.4px | 산세리프 800 · 최대 59px · 자간 -.045em |
+| 영수증 | 읽기 전용 카드 | **체크 가능한 인터랙티브 타일**(줄을 눌러 구독료를 지우면 표·지표가 함께 갱신) |
+| 검색 | `/` 단축키 | **⌘K / Ctrl+K / `/`** + 상단 검색 버튼 |
+| 카드 안 | 넘침 없음 | 이름 2줄·한 줄 소개 2줄 클램프, 타일 높이 326px 고정으로 **잘림 0** |
+
+### 라인업 (24장)
+
+무료 23종: 떡상 레이더 · 원탭 벡터 스튜디오(NEW) · 연말정산 13월의 월급 역산기(NEW) · 원탭 숏폼 스튜디오 ·
+원탭 이미지·썸네일 스튜디오 · 원탭 원고 스튜디오 · 블로그 키워드·SEO 스튜디오 · 커머스 SEO 스튜디오 ·
+카드뉴스·대본 스튜디오 · 사장님 리뷰 답글 스튜디오 · 급여명세서 스튜디오 · 1인 사업자 세금·순수익 계산기 ·
+퇴직금·연차 계산기 · PDF 서명·직인 스튜디오 · 대행사 견적서·제안서 생성기 · 체험단 매칭 보드 · 원탭링크 ·
+유튜브 댓글·고객반응 분석기 · 광고 문구 법률 검수기 · 개인정보·피싱링크 보안 점검기 · ICS Calendar Viewer ·
+Invoice, Receipt & P&L Generator · LLM API Cost Calculator
+
+유료 1장: 원탭 백오피스(월 29만 원부터, 사람이 붙는 대행 서비스). 무료 도구가 아니므로 **절약액 계산에서 제외**하고 카드에 요금을 표시합니다.
+
+## 화면 구성
+
+1. **히어로** — VOL.23 배지, 3줄 임팩트 헤드라인, 약속 칩 3개, 빠른 검색 4개, CTA 3개(도구 열기·절약액·앱처럼 설치)
+2. **영수증 타일** — 요금이 큰 4종 + 외 19종. 줄의 체크를 풀면 그 도구가 계산에서 빠지고, 합계·연간·지표 타일이 동시에 바뀝니다.
+3. **지표 4개** — 무료 도구 수 · 한 달에 사라지는 구독료 · 서버로 가는 입력값 0건 · 첫 결과 8초
+4. **벤토 도구판** — 카테고리 칩 5개, ⌘K 검색, 라이브 토글, 24장 카드(칸 크기·피부가 다름)
+5. **절약액 계산** — 무료 23종 체크 표, 월/연 합계, 전체 선택·해제
+6. **5단계 워크플로** — 01~05, 단계별 도구 칩을 누르면 해당 카드로 이동·강조
+7. **B2B 커스텀 제작** — 납품 3단계 + 문의 폼(서버 전송 없이 문안 생성·복사·mailto)
+8. **FAQ 5개** · **개인정보처리방침**(`privacy.html`)
+
+## 지켜야 하는 원칙
+
+- **서버 0 · 외부 요청 0** — 폰트는 `assets/fonts/*.woff2`, 아이콘·썸네일은 인라인 SVG. CDN·분석·광고 없음.
+- **개인정보 0** — 이름·연락처·계정·블로그명은 소스에 넣지 않습니다. `test.js`가 문자열 수준에서 검사합니다.
+- **입력값은 브라우저에만** — localStorage. 문의 폼은 문안을 만들어 직접 보내는 방식.
+- **실명·계정 하드코딩 금지**, 문의 수신 주소는 `data.js`의 `CONTACT_EMAIL` 한 줄로만 설정.
+
+## 카드 데이터 넣는 법 (`data.js`)
+
+```js
+{
+  id: 'ai-vector-studio', no: 2, name: '원탭 벡터 스튜디오', en: 'OneTap Vector Studio',
+  slug: 'ai-vector-studio', url: 'https://marcj81.github.io/ai-vector-studio/', live: true,
+  category: 'content', thumb: 'vector', badge: 'NEW',
+  bento: { cols: 2, rows: 1, skin: 'studio' },   // cols 1·2 / rows 1·2 / skin light·studio·offer
+  metric: { value: 'SVG', label: '인쇄용 벡터 출력' },  // 와이드·히어로 타일에만 표시
+  short: '한 줄 소개(카드에 보이는 문장)',          // 12~70자
+  tagline: '카드 상세 소개(와이드·히어로에만)',      // 40자 이상
+  features: ['기능1', '기능2', '기능3'],
+  replaces: { name: '대체하는 유료 서비스', price: 19000 }
+}
+```
+
+- `offer: true` + `price`를 주면 유료 서비스 카드가 되고 절약 계산에서 빠집니다(`replaces`는 `null`).
+- 카드 썸네일은 `thumbs.js`에 `thumb` 키와 같은 이름의 함수를 추가합니다(`viewBox="0 0 320 220"`).
+- 카드를 추가·삭제하면 `test.js`의 개수(24·23), `index.html`의 JSON-LD 목록, `sw.js`의 `VERSION`을 함께 갱신하세요.
+
+## 검증
 
 ```bash
-# 로컬에서 보기 (file:// 도 되지만 폰트 로딩이 확실한 http 를 권합니다)
-python3 -m http.server 8000
-# → http://127.0.0.1:8000
-
-# 검증(내부 QA 스크립트 — 공개 저장소에는 넣지 않습니다)
-node test.js        # PASS 445  FAIL 0
-python3 uitest.py   # PASS 254  FAIL 0  (헤드리스 Chrome)
+node test.js        # 540개 단위 검사 (데이터·계산·썸네일·정적 파일·PWA·개인정보)
+python3 uitest.py   # 268개 헤드리스 Chrome 검사 + preview-bento-*.png 캡처
 ```
 
----
+`uitest.py`가 보는 것: 벤토 4열과 칸 크기, 다크 스튜디오 타일 4장, 유료 오퍼 타일, 24장 링크 일치,
+⌘K·`/` 검색, 카테고리 필터(8·6·7·3), 검색 12종, 영수증 체크 ↔ 표 동기화, 절약 계산(466,000원 / 연 5,592,000원),
+5단계 이동, 문의 폼 검증·복사·mailto, FAQ, PWA 설치 모달(안드로이드·아이폰·앱 모드), 서비스 워커·오프라인,
+개인정보처리방침, 외부 요청 0건, 콘솔 오류 0, 390px 가로 넘침 0.
 
-## 1. 한 장에 담은 다섯 구역
+## 배포
 
-| # | 구역 | 하는 일 | 구현 |
-| --- | --- | --- | --- |
-| — | 히어로 | `월 구독료 없이 평생 쓰는 1인 사업자·마케터 무료 도구 21선` + 3대 약속 + **구독료 영수증** | `index.html` `.hero` |
-| 01 | 도구 21종 | 카드 21장(Pro AI 4종 배지) · 검색(동의어 포함) · 카테고리 5종 · 라이브만 보기 · 히어로 빠른 검색 4개 | `data.js` + `app.js` |
-| 02 | 절약액 | 21종 대체 요금 비교표, 체크로 켜고 끄면 월·연 합계와 영수증이 같이 갱신 | `core.js` `savings()` |
-| 03 | 5단계 | 주제 발굴 → 검수 → 제작 → 영업 → 정산, 단계별 도구 3~4개로 카드 이동 | `data.js` `steps` |
-| 04 | 커스텀 제작 | 기본형·스튜디오형·풀커스텀 + **빠른 견적 문의 폼**(동의 필수, 문안 복사/메일) | `data.js` `tiers` + `core.js` `validateLead()` |
-| 05 | FAQ | 돈·데이터·AI 연결·법적 판단 5문항 | `data.js` `faq` |
-| 06 | 앱 설치 | 히어로의 `📱 앱처럼 설치` 버튼 → 안드로이드·크롬은 네이티브 설치 창, iOS는 그림 안내 모달 | `pwa.js` + `manifest.webmanifest` + `sw.js` |
+`main`과 `gh-pages` 두 브랜치에 같은 정적 파일만 올립니다(테스트·미리보기 이미지 제외).
 
-### 절약액 계산
-
-- 21종 대체 요금 합계 **월 432,000원 / 연 5,184,000원**(1인 기준).
-- 표에서 도구를 끄면 그 행이 흐려지고 합계·영수증이 즉시 다시 계산됩니다. `전체 선택/전체 해제` 제공.
-- 요금은 각 서비스 공개 요금제를 2026-11에 확인해 만 원 단위로 반올림한 **참고값**이며, 페이지에도 그렇게 적혀 있습니다. 좌석 수·연간 약정·부가세에 따라 실제 청구액은 달라집니다.
-- 18~21번(리뷰 답글 29,000 · 숏폼 25,000 · 원고 19,000 · 이미지 15,000)을 더해 합계가 344,000원 → 432,000원이 되었습니다.
-
-### 문의 폼
-
-- 필수: 이름(2자↑)·회신 메일(형식 검사)·필요한 도구·요청 내용(10자↑)·**개인정보 수집·이용 동의**.
-- 전송 버튼이 아니라 **문안을 만드는** 버튼입니다. 만든 문안을 `문안 복사`하거나, 수신 주소가 설정돼 있으면 `메일 앱으로 보내기`(`mailto:`)로 엽니다.
-- 검증 실패 시 첫 오류로 포커스가 이동하고, 오류는 `role="alert"`로 읽힙니다.
-- `CONTACT_EMAIL`은 공개 노출을 피하려고 **빈 값(복사 전용)** 으로 둡니다.
-
-### 홈 화면 설치(PWA)
-
-- **버튼 한 번으로 설치(안드로이드 크롬·삼성 인터넷·데스크톱 크롬)**: `beforeinstallprompt`를 잡아 두었다가 `📱 앱처럼 설치` 클릭 시 브라우저 기본 설치 창을 그대로 띄웁니다. 설치되면 버튼이 `✓ 앱처럼 설치됨`으로 바뀝니다.
-- **아이폰 사파리(자동 설치 창 없음)**: 같은 버튼을 누르면 **그림 안내 모달**이 열립니다 — `사파리 하단 공유(□↑) → 홈 화면에 추가 → 추가` 3단계, 현재 주소 `주소 복사` 버튼 포함. 안드로이드·PC로 열면 각 플랫폼에 맞는 안내로 자동 교체됩니다.
-- **이미 앱으로 열린 경우**(`display-mode: standalone`): 안내를 띄우지 않고 버튼이 `✓ 앱 모드로 실행 중`(비활성) 상태로 표시됩니다.
-- **오프라인·즉시 실행**: `sw.js`가 같은 오리진의 정적 자산만 캐시합니다. 문서는 네트워크 우선 → 실패 시 캐시, 나머지는 캐시 우선 + 조용한 갱신. **외부 오리진 요청은 가로채지 않고**, `?embed` 요청은 그대로 네트워크로 보냅니다.
-- **아이콘**: `make-icons.py`(PIL, 4배 슈퍼샘플링)로 크림 에디토리얼 톤의 `1` 엠블럼을 생성 — `icon-192`, `icon-512`, `icon-maskable-512`(안전영역 72%), `apple-touch-icon`(180, 불투명 RGB).
-- `manifest.webmanifest`: `name 원탭 도구 허브` · `short_name 원탭도구` · `start_url/scope ./`(하위 경로 배포에서도 동작) · `display standalone` · 배경/테마 `#F3EADD`.
-
----
-
-## 2. 배포 전에 바꿀 곳
-
-| 파일 | 상수 | 지금 값 | 바꿀 때 |
-| --- | --- | --- | --- |
-| `data.js` | `CONTACT_EMAIL` | `''` | 문의 수신 메일을 넣으면 `메일 앱으로 보내기` 버튼이 켜집니다. 비어 있으면 복사 전용으로 동작합니다. |
-| `data.js` | `apps[].live` | 21종 모두 `true` | 해당 앱을 GitHub Pages에 올린 뒤 `true`로. 카드 CTA가 `먼저 써 보기` → `지금 열기`로 바뀌고 상단 라이브 수·안내 문구도 자동으로 따라갑니다. |
-| `index.html` | `canonical` / `og:url` / JSON-LD `url` | `https://marcj81.github.io/portal-hub/` | 저장소 이름이 다르면 세 곳을 같은 값으로. |
-
-> **링크 상태(2026-11-21 실측)** — 21개 앱 주소를 직접 열어 본 결과 **21개 모두 HTTP 200** 입니다. 이 허브 자신은 `https://marcj81.github.io/portal-hub/` 에서 열립니다(GitHub Pages, 게시 브랜치 `gh-pages` — `main`과 같은 내용 · HTTPS 강제).
-
----
-
-## 3. 라인업 (21종)
-
-| # | 이름 | 폴더 | 카테고리 | 라이브 |
-| --- | --- | --- | --- | --- |
-| 01 | 떡상 레이더 | `shortform-radar` | 콘텐츠·SNS | ● |
-| 02 | 블로그 키워드·SEO 스튜디오 | `blog-seo-studio` | 콘텐츠·SNS | ● |
-| 03 | 커머스 SEO 스튜디오 | `commerce-seo-studio` | 커머스·마케팅 | ● |
-| 04 | 카드뉴스·대본 스튜디오 | `cardnews-script-studio` | 콘텐츠·SNS | ● |
-| 05 | 유튜브 댓글·고객반응 분석기 | `youtube-comment-analyzer` | 콘텐츠·SNS | ● |
-| 06 | 광고 문구 법률 검수기 | `ad-law-checker` | 법률·세무·계약 | ● |
-| 07 | 대행사 견적서·제안서 생성기 | `agency-proposal-maker` | 커머스·마케팅 | ● |
-| 08 | 체험단 매칭 보드 | `influencer-campaign-board` | 커머스·마케팅 | ● |
-| 09 | PDF 서명·직인 스튜디오 | `pdf-sign-stamp` | 법률·세무·계약 | ● |
-| 10 | 급여명세서 스튜디오 | `payslip-calculator` | 법률·세무·계약 | ● |
-| 11 | 1인 사업자 세금·순수익 계산기 | `tax-margin-calculator` | 법률·세무·계약 | ● |
-| 12 | 원탭링크 (OneTapLink) · 링크·문의폼 빌더 | `onetaplink-studio` | 커머스·마케팅 | ● |
-| 13 | ICS Calendar Viewer & CSV Converter | `ics-viewer-online` | 보안·유틸 | ● |
-| 14 | Invoice, Receipt & P&L Generator | `invoice-receipt-pl-generator` | 법률·세무·계약 | ● |
-| 15 | LLM API Cost Calculator & llms.txt Generator | `llm-cost-llms-txt` | 보안·유틸 | ● |
-| 16 | 퇴직금·연차 계산기 | `severance-leave-calculator` | 법률·세무·계약 | ● |
-| 17 | 개인정보·피싱링크 보안 점검기 | `privacy-security-guard` | 보안·유틸 | ● |
-| 18 | 사장님 리뷰 답글 스튜디오 | `review-reply-studio` | 커머스·마케팅 | ● |
-| 19 | 원탭 숏폼 스튜디오 | `shorts-video-studio` | 콘텐츠·SNS | ● |
-| 20 | 원탭 원고 스튜디오 | `ai-writer-studio` | 콘텐츠·SNS | ● |
-| 21 | 원탭 이미지·썸네일 스튜디오 | `ai-image-studio` | 콘텐츠·SNS | ● |
-
-- 화면 표기명 `원탭링크 (OneTapLink)`는 12번 앱의 표시명입니다. 배포 주소는 저장소 이름을 따라 `onetaplink-studio`이며, 로컬 폴더명만 옛 이름(`apps/linkhub-studio`)입니다. 다른 이름으로 바꾸려면 `data.js`의 `name`·`slug`·`url`과 `index.html`의 JSON-LD를 함께 고치세요.
-- 주소는 전부 `https://marcj81.github.io/<폴더>/` 규칙입니다. 16번 `severance-leave-calculator`, 17번 `privacy-security-guard`, 18~21번은 `review-reply-studio`·`shorts-video-studio`·`ai-writer-studio`·`ai-image-studio` 입니다.
-- 카테고리는 콘텐츠·SNS 7 · 커머스·마케팅 5 · 법률·세무·계약 6 · 보안·유틸 3 = 21종입니다.
-- 썸네일은 21종 모두 `thumbs.js`의 자체 SVG(`radar` … `guard`, `reply`, `shorts`, `writer`, `image`)이며 외부 이미지 요청이 없습니다.
-- 18~21번은 `pro: true` — 무료 모드는 키 없이 동작하고, OpenAI·Gemini·Claude 키를 넣으면 Pro AI가 결과물을 채웁니다. 카드 우상단 `Pro AI 연결` 배지로 구분합니다.
-
----
-
-## 4. 검증 결과 (2026-11-21) — 내부 QA 스크립트 측정, 공개 저장소에는 미포함
-
-### `node test.js` → PASS 445 / FAIL 0
-
-- 데이터: 21종·중복 없음·번호 1~21·카테고리 합 21·라이브 21종·URL 규칙·썸네일 21종·Pro 4종·16~21번 저장소 이름
-- 코어: 검색 순위(“세금”→세금 계산기, “급여”→급여명세서, “퇴직금”→퇴직금·연차, “리뷰”→리뷰 답글, “숏폼”→숏폼, “썸네일”→이미지, “원고”→원고, “피싱”·“개인정보”→보안 점검기, “누끼”·“부가세”·“연차” 동의어), 필터, 절약액(월 432,000 / 연 5,184,000, 연=월×12, 선택 0개=0원), 금액 표기, 시각 형식
-- 폼: 필수 5종·메일 형식·연락처 선택/형식·동의 없으면 실패하는지, 문안에 동의 문구·작성 시각·수신자
-- 정적: h1 1개, JSON-LD 21항목 파싱·`numberOfItems` 21, 외부 script/link/img/iframe 0, `fetch`·`XMLHttpRequest` 0, CSS `url(http` 0, 추적 스크립트 0, 폰트 4종 woff2 매직바이트
-- 브랜드: 옛 브랜드명 **0건**(8개 파일), `원탭 도구 허브`·`OneTap Tools` 탭 제목·og:site_name·JSON-LD·푸터 반영
-- 프라이버시: 실명·블로그명·계정 핸들·전화번호·메일 서비스 도메인 **0건**
-- PWA: `manifest.webmanifest` 파싱·name/short_name/start_url/scope/display/색·아이콘 4종(192·512·maskable·180) 규격(픽셀·불투명 RGB), 헤드의 manifest·apple-touch-icon·apple-mobile-web-app-capable·theme-color, 버튼·모달 마크업, `pwa.js`의 설치 프롬프트·standalone 감지·iOS 문구·클립보드·ESC·SW 등록, `sw.js`의 캐시 버전·같은 오리진 한정·`?embed` 우회·문서 네트워크 우선·외부 URL 0건
-
-### `python3 uitest.py` → PASS 254 / FAIL 0 (Chrome 헤드리스)
-
-- 데스크톱 1440×900: h1 3줄, 영수증 줄 합 = 합계(432,000), 도장이 안내문을 가리지 않음, 카드 21장·3열·Pro 배지 4개, 필터 5종, 검색·지우기·결과 없음, 라이브만 21장, `/` 키 포커스, 절약 표 21행·체크 시 월/연/영수증 동시 갱신·0원·복귀, 5단계 클릭 → 카드 강조·스크롤, 폼 오류 5종 → 채움 → 동의 → 문안 생성 → 클립보드 일치 → 수신 주소를 넣었을 때만 mailto 버튼, 내비 앵커 오프셋, 카드에서 폼으로 도구 자동 선택, FAQ, 폰트 로드, 라벨 누락 0, 포커스 링
-- 모바일 390×844: 카드 21장 1열, 칩 줄바꿈, 히어로 버튼 전폭, 표 3번째 열 숨김, 폼 1열, 넘침 0
-- 768×1024: 카드 2열, 넘침 0
-- PWA: manifest·sw·pwa·아이콘 4종 HTTP 200, 설치 버튼 44px↑, `beforeinstallprompt` 가로채기 → 클릭 시 `prompt()` 호출 1회 → 닫힘 시 안내 모달, 모달 열림/ESC/닫기/바깥 클릭·초점 이동·주소 복사·`aria-modal`, 아이폰 UA에서 `사파리·공유(□↑)·홈 화면에 추가` 문구, standalone 컨텍스트에서 `앱 모드로 실행 중`+모달 안 열림, **오프라인 재실행에서도 제목·히어로·카드 21장**, Chrome `Page.getInstallabilityErrors` 정상(시크릿 모드 외 0)
-- 모달을 연 상태에서도 가로 넘침 0 (데스크톱·390·아이폰 UA)
-- 전 화면 공통: **콘솔 오류 0 · 페이지 오류 0 · 실패 요청 0 · 4xx/5xx 0 · 외부 요청 0건**
-- 캡처: `preview-desktop.png`(1440, 전체 높이) · `preview-mobile.png`(390, 전체 높이)
-
-### 실서버(GitHub Pages) 재검증 — PASS 254 / FAIL 0 (2026-11-21, PWA 포함)
-
-- `https://marcj81.github.io/portal-hub/` **HTTP 200**(30,635B) · 게시 브랜치 `gh-pages`(main과 같은 트리) · Pages `status: built` · HTTPS 강제
-- `manifest.webmanifest` 200(`application/manifest+json`) · `sw.js` 200(`application/javascript`) · `pwa.js` 200
-- 아이콘 4종 200 — `icon-192` 2,174B · `icon-512` 4,753B · `icon-maskable-512` 4,108B · `apple-touch-icon` 2,122B
-- 설치 버튼 클릭 → 네이티브 설치 창 `prompt()` 호출 1회 → 닫으면 그림 안내 모달, ESC·닫기·바깥 클릭으로 닫힘, `주소 복사` = `https://marcj81.github.io/portal-hub/`
-- Chrome 설치 가능성 오류 0(시크릿 모드 항목 제외) · Service Worker 범위 `https://marcj81.github.io/portal-hub/` · **오프라인 재실행에서도 제목·히어로·카드 21장**
-- 아이폰 UA: `사파리 공유(□↑) → 홈 화면에 추가 → 추가` 3단계 모달, 열어도 가로 넘침 0
-- 도구 **21종 카드 링크 21개 전부 HTTP 200** (`data.js`의 URL을 직접 GET)
-- 카드 21장 · 썸네일 21개 · `Pro AI 연결` 배지 4개 · 절약 월 432,000원 / 연 5,184,000원
-- 요청 전부 같은 도메인 → **콘솔 오류 0 · 페이지 오류 0 · 실패 요청 0 · 4xx/5xx 0 · 외부 요청 0건**
-- 가로 넘침 0 (1440 · 768 · 390) · DOMContentLoaded 104ms · load 443ms
-- 캡처: `work/live-shots-portal/21-pwa.png`(설치 안내 모달) · `21-pwa-hero.png`(설치 버튼) · `21-pwa-iphone.png`(아이폰 안내)
-
----
-
-## 5. 디자인 — 에디토리얼 톤
-
-`packages/design-ref-engine.js` **v2.0.0**의 `cream-editorial` 프리셋에서 색·타이포·여백·형태를 그대로 가져와 CSS 변수로 굳혔습니다(런타임에 엔진을 불러오지 않습니다 — 외부 요청 0건 유지).
-
-| 토큰 | 값 | 쓰는 곳 |
-| --- | --- | --- |
-| `--bg` | `#F3EADD` | 바탕(크림) |
-| `--surface` | `#FFFCF6` | 카드·영수증·폼 |
-| `--ink` | `#33281E` | 제목·본문·다크 섹션 |
-| `--sub` | `#6A5B4A` | 보조 텍스트 |
-| `--line` | `#E0D2BE` | 1px 괘선 |
-| `--accent` | `#A8431F` | 테라코타 포인트(링크·숫자·도장) |
-| 여백 | 8 단위, 섹션 72~96px, 최대 1180px | `.wrap` |
-| 형태 | radius 4 이하, 그림자 1종 | 카드·버튼 |
-
-- **대비**: 엔진 `contrastReport('cream-editorial')` 8쌍 전부 통과(본문/배경 12.05:1 AAA, 카드 위 14.02:1 AAA, 보조 5.49:1 AA, CTA 글자 5.72:1 AA).
-- **AI 기본값 탈피**: `detectDefaultLook` 결과 `risk 0 · "개성 있음"`(파랑·보라 포인트 + 큰 라운딩 + 소프트 섀도 조합이 아님).
-- **질감**: 엔진의 `grainSVGDataUri()`(feTurbulence) 결과를 `data:` URI로 CSS에 인라인, `mix-blend-mode:multiply` 5.5%.
-- **타이포**: 제목은 명조 계열(Noto Serif KR 서브셋) + 본문 IBM Plex Sans KR. `font-mix: myeongjo-title`과 같은 축.
-- **브랜드 마크**: 옛 `問` 자리를 `1`(OneTap)로 바꾸고, 상단은 `원탭 도구 허브` + `OneTap Tools · VOL.21`, 푸터는 `원탭 도구 허브 (OneTap Tools)` 로 통일했습니다.
-
-### 폰트 (전부 로컬, 서브셋)
-
-| 파일 | 원본 | 크기 | 라이선스 |
-| --- | --- | --- | --- |
-| `assets/fonts/hub-serif.woff2` | Noto Serif CJK KR Regular | 74KB | SIL OFL 1.1 (`OFL-NotoSerifCJK.txt`) |
-| `assets/fonts/plexkr-Regular/SemiBold/Bold.woff2` | IBM Plex Sans KR | 약 1.1MB | SIL OFL 1.1 |
-
-명조는 이 페이지에 실제로 쓰인 글자(557자)만 서브셋했습니다. 폼에 방문자가 입력한 글자는 본문 폰트로 표시되고, 시스템 폰트로 자연스럽게 대체됩니다.
-
----
-
-## 6. 파일
-
-```
-portal-hub/
-  index.html      화면 (히어로·도구·절약액·5단계·B2B·FAQ·푸터)
-  styles.css      디자인 토큰 + 전 구간 반응형(1120·900·680·print) + SVG 썸네일 색 토큰
-  data.js         21종 라인업·카테고리·5단계·납품 3단계·FAQ·문의 수신 설정
-  core.js         검색·필터·절약 계산·폼 검증·문안·mailto (DOM 없음, node에서도 실행)
-  thumbs.js       21종 카드 썸네일 SVG 생성기 (외부 이미지 0)
-  app.js          렌더링·상태·이벤트
-  privacy.html    개인정보처리방침 (localStorage·문의 폼·AI 연결·보관 3개월)
-  pwa.js          홈 화면 설치 — beforeinstallprompt·iOS 안내 모달·주소 복사·SW 등록
-  manifest.webmanifest  PWA 매니페스트 (standalone · 크림 테마 · 아이콘 4종)
-  sw.js           Service Worker — 같은 오리진 정적 자산 캐시, 문서 네트워크 우선, ?embed 우회
-  test.js         단위·정적 검사 445건
-  uitest.py       Chrome 실브라우저 검사 254건 + 미리보기 캡처(16,384px 초과분 구간 캡처·스티치)
-  make-icons.py   PWA 아이콘 생성기(PIL) — 공개 저장소에는 넣지 않습니다
-  preview-desktop.png / preview-mobile.png
-  assets/favicon.svg · assets/fonts/* · assets/icons/(192·512·maskable·apple 180)
-  .nojekyll
+```bash
+# 저장소 루트에서
+git add -A && git commit -m "v2.0.0-bento" && git push origin main
+git subtree push --prefix . origin gh-pages   # 또는 gh-pages 체크아웃 후 merge
 ```
 
-## 7. 알아둘 점
+배포 후 `UITEST_BASE=https://marcj81.github.io/portal-hub python3 uitest.py`로 실서버를 다시 검사합니다.
 
-- **21종 모두 `live: true`** 이고 2026-11-21 실측으로 21개 주소가 전부 HTTP 200 입니다.
-- 문의 폼은 서버가 없으므로 **자동 접수되지 않습니다**. 문안을 만들어 방문자가 직접 보내는 방식이고, 수신 주소를 넣기 전에는 `메일 앱으로 보내기`가 숨겨집니다.
-- 요금·법령·세율은 참고값입니다. 페이지 하단과 FAQ에 법률·세무 자문이 아니라는 점을 적었습니다.
-- **PWA 주의**: `sw.js`는 배포마다 `VERSION`을 올려야 방문자 캐시가 새 파일로 바뀝니다. `file://`로 열면 Service Worker는 등록되지 않지만(보안 문맥 아님) 설치 버튼은 그대로 동작합니다. 아이폰은 애플 정책상 설치 팝업이 없어 그림 안내만 제공합니다.
-- 다크 모드는 넣지 않았습니다. 크림 에디토리얼 톤이 이 페이지의 정체성이라 임의로 반전하지 않았고, `prefers-reduced-motion`만 존중합니다.
+## 캐시
+
+`sw.js`의 `const VERSION = 'v2.0.0-bento'`를 올리지 않으면 기존 방문자가 옛 CSS를 계속 봅니다.
+문서는 네트워크 우선, 정적 자산은 캐시 우선 + 뒤에서 갱신입니다.

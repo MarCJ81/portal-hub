@@ -1,6 +1,7 @@
 /* ============================================================================
  * 원탭 도구 허브 (OneTap Tools) · 화면
  * data.js(라인업) + core.js(계산) + thumbs.js(SVG) 를 받아 그립니다.
+ * 벤토 그리드(칸 크기·피부), ⌘K 검색, 영수증 체크 타일.
  * 서버·외부 요청 없음. 상태는 이 탭 안에만 있습니다.
  * ==========================================================================*/
 (function () {
@@ -16,11 +17,13 @@
   var CAT_LABEL = {};
   D.categories.forEach(function (c) { CAT_LABEL[c.id] = c.label; });
 
+  var FREE = C.freeApps(D.apps);
+
   var state = {
     category: 'all',
     query: '',
     liveOnly: false,
-    picks: D.apps.map(function (a) { return a.id; })
+    picks: FREE.map(function (a) { return a.id; })
   };
 
   function num(n) { return C.fmtKRW(n).replace('원', ''); }
@@ -46,40 +49,68 @@
     });
   }
 
-  /* ------------------------------------------------------------ 카드 21장 */
+  /* ------------------------------------------------------------ 벤토 카드 */
+  function badgeHtml(app) {
+    var out = '';
+    if (app.offer) {
+      out += '<span class="card-badge offer" title="사람이 붙는 유료 대행 서비스입니다">유료 서비스' +
+        (app.price ? ' · ' + app.price : '') + '</span>';
+    } else if (app.badge === 'NEW') {
+      out += '<span class="card-badge new">NEW</span>';
+    } else if (app.badge === 'LIVE') {
+      out += '<span class="card-badge live"><i aria-hidden="true"></i>LIVE</span>';
+    }
+    if (app.pro) {
+      out += '<span class="card-badge pro" title="OpenAI·Gemini·Claude 키를 넣으면 Pro AI가 함께 채웁니다">PRO AI</span>';
+    }
+    return out ? '<span class="card-badges">' + out + '</span>' : '';
+  }
+
   function cardHtml(app) {
+    var b = app.bento || {};
+    var cols = b.cols || 1;
+    var rows = b.rows || 1;
+    var skin = b.skin || 'light';
+    var wide = cols > 1;
     var live = app.live;
-    var badge = live
-      ? '<span class="card-badge live"><span class="dot"></span>지금 열 수 있음</span>'
-      : '<span class="card-badge"><span class="dot"></span>배포 준비 중</span>';
     var name = live
       ? '<a href="' + app.url + '" target="_blank" rel="noopener">' + app.name + '</a>'
       : app.name;
     var cta = live
-      ? '<div class="card-cta-wrap">' +
-        '<a class="card-cta" href="' + app.url + '" target="_blank" rel="noopener" aria-label="' +
-        app.name + ' 새 창에서 열기">지금 열기 <span aria-hidden="true">↗</span></a>' +
-        '<button type="button" class="card-ask" data-prefill="' + app.id + '" aria-label="' +
-        app.name + ' 우리 회사용으로 제작 문의">커스텀 제작 문의</button></div>'
+      ? '<a class="card-cta" href="' + app.url + '" target="_blank" rel="noopener" aria-label="' +
+        app.name + ' 새 창에서 열기">' + (app.offer ? '안내 보기' : '지금 열기') +
+        ' <span aria-hidden="true">↗</span></a>'
       : '<button type="button" class="card-cta pending" data-prefill="' + app.id + '">먼저 써 보기</button>';
-    var pro = app.pro
-      ? '<span class="card-badge pro" title="OpenAI·Gemini·Claude 키를 넣으면 Pro AI가 함께 채웁니다">Pro AI 연결</span>'
-      : '';
     var price = app.replaces
       ? '<p class="card-price"><span>대체 예시 · ' + app.replaces.name + '</span>' +
         '<b>월 ' + C.fmtKRW(app.replaces.price) + '</b></p>'
+      : (app.price ? '<p class="card-price"><span>대행 요금</span><b>' + app.price + '</b></p>' : '');
+    var metric = app.metric && wide
+      ? '<p class="card-metric"><b>' + app.metric.value + '</b><span>' + app.metric.label + '</span></p>'
       : '';
-    return '<article class="card" id="app-' + app.slug + '" data-id="' + app.id + '" data-cat="' + app.category + '">' +
-      '<div class="card-head"><span class="card-no">No. <b>' + (app.no < 10 ? '0' + app.no : app.no) + '</b></span>' +
-      '<span class="card-cat">' + CAT_LABEL[app.category] + '</span></div>' +
-      '<figure class="card-thumb">' + badge + pro + T.get(app.thumb, app.name) + '</figure>' +
+
+    return '<article class="card' + (wide ? ' is-wide' : '') + '" id="app-' + app.slug + '"' +
+      ' data-id="' + app.id + '" data-cat="' + app.category + '"' +
+      ' data-cols="' + cols + '" data-rows="' + rows + '" data-skin="' + skin + '">' +
+      '<div class="card-top">' +
+        '<span class="card-no">No.' + (app.no < 10 ? '0' + app.no : app.no) + '</span>' +
+        '<span class="card-cat">' + CAT_LABEL[app.category] + '</span>' +
+        badgeHtml(app) +
+      '</div>' +
+      '<figure class="card-media">' + T.get(app.thumb, app.name) + '</figure>' +
       '<div class="card-body">' +
         '<h3 class="card-name">' + name + '</h3>' +
-        (app.lang === 'en' ? '<p class="card-en">English · ' + app.en + '</p>' : '<p class="card-en">' + app.en + '</p>') +
-        '<p class="card-tagline">' + app.tagline + '</p>' +
+        '<p class="card-en">' + (app.lang === 'en' ? 'English · ' : '') + app.en + '</p>' +
+        metric +
+        '<p class="card-tagline">' + app.short + '</p>' +
+        (wide ? '<p class="card-long">' + app.tagline + '</p>' : '') +
         '<ul class="card-feats">' + app.features.map(function (f) { return '<li>' + f + '</li>'; }).join('') + '</ul>' +
       '</div>' +
-      '<div class="card-foot">' + price + cta + '</div>' +
+      '<div class="card-foot">' + price +
+        '<div class="card-cta-wrap">' + cta +
+        '<button type="button" class="card-ask" data-prefill="' + app.id + '" aria-label="' +
+        app.name + ' 우리 회사용으로 제작 문의">커스텀 제작 문의</button></div>' +
+      '</div>' +
       '</article>';
   }
 
@@ -96,7 +127,7 @@
     if (state.query) bits.push('“' + state.query + '”');
     if (state.category !== 'all') bits.push(CAT_LABEL[state.category]);
     if (state.liveOnly) bits.push('지금 열 수 있는 도구');
-    $('#result-count').textContent = (bits.length ? bits.join(' · ') + ' — ' : '') + list.length + '종';
+    $('#result-count').textContent = (bits.length ? bits.join(' · ') + ' — ' : '') + list.length + '장';
     $('#search-clear').hidden = !state.query;
 
     $$('[data-prefill]', grid).forEach(function (btn) {
@@ -105,12 +136,8 @@
   }
 
   /* ------------------------------------------------------------ 절약액 */
-  function selectedApps() {
-    return D.apps.filter(function (a) { return state.picks.indexOf(a.id) >= 0; });
-  }
-
   function renderSavingsTable() {
-    $('#savings-body').innerHTML = D.apps.map(function (a) {
+    $('#savings-body').innerHTML = FREE.map(function (a) {
       var on = state.picks.indexOf(a.id) >= 0;
       return '<tr data-id="' + a.id + '"' + (on ? '' : ' class="off"') + '>' +
         '<td class="col-check"><input class="check" type="checkbox" data-pick="' + a.id + '"' +
@@ -121,61 +148,105 @@
         '</tr>';
     }).join('');
 
-    $$('[data-pick]').forEach(function (box) {
+    $$('#savings-body [data-pick]').forEach(function (box) {
       box.addEventListener('change', function () {
-        var id = box.getAttribute('data-pick');
-        var i = state.picks.indexOf(id);
-        if (box.checked && i < 0) state.picks.push(id);
-        if (!box.checked && i >= 0) state.picks.splice(i, 1);
+        togglePick(box.getAttribute('data-pick'), box.checked);
         box.closest('tr').classList.toggle('off', !box.checked);
         updateSavings();
       });
     });
   }
 
+  function togglePick(id, on) {
+    var i = state.picks.indexOf(id);
+    if (on && i < 0) state.picks.push(id);
+    if (!on && i >= 0) state.picks.splice(i, 1);
+  }
+
   function updateSavings() {
     var s = C.savings(D.apps, state.picks);
+    renderReceipt();
+    applySavings(s);
+  }
+
+  /* 숫자만 갱신합니다(영수증 줄은 다시 그리지 않아 클릭 중인 체크박스가 유지됩니다). */
+  function applySavings(s) {
     $('#sum-monthly').textContent = num(s.monthly);
     $('#sum-yearly').textContent = num(s.yearly);
     $('#sum-monthly-sub').textContent = '선택 ' + s.count + '종 · 1인';
     $('#pick-count').textContent = s.count;
     $('#savings-foot').textContent = C.fmtKRW(s.monthly);
-    renderReceipt(s);
-
-    var all = $('#pick-all'), none = $('#pick-none');
-    all.disabled = s.count === D.apps.length;
-    none.disabled = s.count === 0;
-  }
-
-  function renderReceipt(s) {
-    var sel = selectedApps();
-    var shown = sel.slice(0, 4);
-    var rest = sel.slice(4);
-    var rows = shown.map(function (a) {
-      return '<li><span class="rl-name">' + a.name + '</span>' +
-        '<span class="rl-price">' + num(a.replaces.price) + '</span></li>';
-    });
-    if (rest.length) {
-      var restSum = rest.reduce(function (sum, a) { return sum + a.replaces.price; }, 0);
-      rows.push('<li><span class="rl-name rl-more">외 ' + rest.length + '종</span>' +
-        '<span class="rl-price">' + num(restSum) + '</span></li>');
-    }
-    if (!sel.length) {
-      rows.push('<li><span class="rl-name rl-more">선택한 도구가 없습니다</span><span class="rl-price">0</span></li>');
-    }
-    $('#receipt-lines').innerHTML = rows.join('');
+    var statMonth = $('#stat-month'), statYear = $('#stat-year');
+    if (statMonth) statMonth.textContent = num(s.monthly);
+    if (statYear) statYear.textContent = num(s.yearly);
     $('#receipt-total').textContent = C.fmtKRW(s.monthly);
     $('#receipt-yearly').textContent = C.fmtKRW(s.yearly);
     $('#receipt-count').textContent = s.count + '종';
+
+    var restPicked = RECEIPT_REST.filter(function (a) { return state.picks.indexOf(a.id) >= 0; });
+    var restSum = restPicked.reduce(function (sum, a) { return sum + a.replaces.price; }, 0);
+    var restPrice = $('#receipt-lines .rl-rest .rl-price');
+    if (restPrice) restPrice.textContent = num(restSum);
+    var noPick = $('#receipt-lines .rl-none');
+    if (noPick) noPick.hidden = s.count !== 0;
+
+    var all = $('#pick-all'), none = $('#pick-none');
+    all.disabled = (s.count === FREE.length);
+    none.disabled = (s.count === 0);
+  }
+
+  /* 영수증 타일: 요금 큰 4종을 고정으로 보여 주고, 체크를 풀면 그 도구가 계산에서 빠집니다. */
+  var RECEIPT_TOP = FREE.slice().sort(function (a, b) {
+    return b.replaces.price - a.replaces.price || a.no - b.no;
+  }).slice(0, 4);
+  var RECEIPT_REST = FREE.filter(function (a) { return RECEIPT_TOP.indexOf(a) < 0; });
+
+  function renderReceipt() {
+    var rows = RECEIPT_TOP.map(function (a) {
+      var on = state.picks.indexOf(a.id) >= 0;
+      return '<li><label class="rl" data-row="' + a.id + '">' +
+        '<input class="rl-check" type="checkbox" data-pick="' + a.id + '"' + (on ? ' checked' : '') +
+        ' aria-label="' + a.name + ' 구독료 지우기">' +
+        '<span class="rl-name">' + a.name + '</span>' +
+        '<span class="rl-price">' + num(a.replaces.price) + '</span></label></li>';
+    });
+    rows.push('<li class="rl-rest"><span class="rl-name rl-more">외 ' + RECEIPT_REST.length + '종</span>' +
+      '<span class="rl-price">0</span></li>');
+    rows.push('<li class="rl-rest rl-none" hidden><span class="rl-name rl-more">선택한 도구가 없습니다</span></li>');
+    $('#receipt-lines').innerHTML = rows.join('');
+
+    $$('#receipt-lines [data-pick]').forEach(function (box) {
+      box.addEventListener('change', function () {
+        togglePick(box.getAttribute('data-pick'), box.checked);
+        syncPickBoxes();
+        syncReceiptRows();
+        applySavings(C.savings(D.apps, state.picks));
+      });
+    });
+  }
+
+  function syncReceiptRows() {
+    $$('#receipt-lines .rl').forEach(function (label) {
+      var id = label.getAttribute('data-row');
+      var on = state.picks.indexOf(id) >= 0;
+      label.classList.toggle('is-off', !on);
+      var box = label.querySelector('[data-pick]');
+      if (box) box.checked = on;
+    });
+  }
+
+  function syncPickBoxes() {
+    $$('#savings-body [data-pick]').forEach(function (box) {
+      var on = state.picks.indexOf(box.getAttribute('data-pick')) >= 0;
+      box.checked = on;
+      var tr = box.closest('tr');
+      if (tr) tr.classList.toggle('off', !on);
+    });
   }
 
   function setPicks(ids) {
     state.picks = ids.slice();
-    $$('[data-pick]').forEach(function (box) {
-      var on = state.picks.indexOf(box.getAttribute('data-pick')) >= 0;
-      box.checked = on;
-      box.closest('tr').classList.toggle('off', !on);
-    });
+    syncPickBoxes();
     updateSavings();
   }
 
@@ -187,7 +258,8 @@
       }).filter(Boolean);
       return '<li class="step">' +
         '<p class="step-no">' + s.no + '<small>STEP</small></p>' +
-        '<div><h3 class="step-title">' + s.title + '</h3><p class="step-lead">' + s.lead + '</p></div>' +
+        '<div class="step-main"><h3 class="step-title">' + s.title + '</h3>' +
+        '<p class="step-lead">' + s.lead + '</p></div>' +
         '<div class="step-side"><p class="step-out">결과물 <b>' + s.output + '</b></p>' +
         '<div class="step-apps">' + apps.map(function (a) {
           return '<button type="button" class="step-app" data-goto="' + a.slug + '">' + a.name + '</button>';
@@ -413,6 +485,13 @@
   }
 
   /* ------------------------------------------------------------ 검색 */
+  function focusSearch() {
+    var input = $('#search-input');
+    var tools = $('#tools');
+    window.scrollTo({ top: tools.offsetTop - 60, behavior: 'smooth' });
+    window.setTimeout(function () { input.focus({ preventScroll: true }); }, 260);
+  }
+
   function bindSearch() {
     var input = $('#search-input');
     var timer = null;
@@ -436,6 +515,7 @@
       renderCards();
       input.focus();
     });
+    $('#search-trigger').addEventListener('click', focusSearch);
     $('#empty-reset').addEventListener('click', function () {
       input.value = '';
       state.query = '';
@@ -451,13 +531,19 @@
       state.liveOnly = e.target.checked;
       renderCards();
     });
+
     document.addEventListener('keydown', function (e) {
-      if (e.key !== '/' || e.metaKey || e.ctrlKey || e.altKey) return;
       var tag = (document.activeElement && document.activeElement.tagName) || '';
-      if (/^(INPUT|TEXTAREA|SELECT)$/.test(tag)) return;
+      var typing = /^(INPUT|TEXTAREA|SELECT)$/.test(tag);
+      var cmdK = (e.key === 'k' || e.key === 'K') && (e.metaKey || e.ctrlKey);
+      if (cmdK) {
+        e.preventDefault();
+        focusSearch();
+        return;
+      }
+      if (e.key !== '/' || e.metaKey || e.ctrlKey || e.altKey || typing) return;
       e.preventDefault();
-      window.scrollTo({ top: $('#tools').offsetTop - 70, behavior: 'smooth' });
-      input.focus({ preventScroll: true });
+      focusSearch();
     });
 
     $$('.quick-tag').forEach(function (btn) {
@@ -481,14 +567,14 @@
 
   /* ------------------------------------------------------------ 시작 */
   function boot() {
-    var live = C.liveCount(D.apps);
-    $('#live-pill').innerHTML = '<b>' + live + '</b>종 라이브';
+    var live = C.liveCount(FREE);
+    $('#live-pill').innerHTML = '<i aria-hidden="true"></i><b>' + live + '</b>종 라이브';
     var status = $('#status-line');
     if (status) {
-      status.textContent = (D.apps.length - live) === 0
-        ? live + '종 모두 지금 바로 열 수 있습니다.'
-        : live + '종은 지금 열려 있고, ' + (D.apps.length - live) + '종은 배포를 기다립니다.';
+      status.textContent = live + '종 모두 지금 바로 열 수 있습니다.';
     }
+    var toolsStat = $('#stat-tools');
+    if (toolsStat) toolsStat.textContent = String(FREE.length);
     $('#foot-version').textContent = 'v' + D.meta.version;
 
     renderChips();
@@ -501,7 +587,7 @@
     bindForm();
 
     $('#pick-all').addEventListener('click', function () {
-      setPicks(D.apps.map(function (a) { return a.id; }));
+      setPicks(FREE.map(function (a) { return a.id; }));
     });
     $('#pick-none').addEventListener('click', function () {
       setPicks([]);
