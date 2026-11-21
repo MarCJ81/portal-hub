@@ -106,6 +106,14 @@ python3 uitest.py   # PASS 182  FAIL 0  (헤드리스 Chrome)
 - 전 화면 공통: **콘솔 오류 0 · 페이지 오류 0 · 실패 요청 0 · 4xx/5xx 0 · 외부 요청 0건**
 - 캡처: `preview-desktop.png`(1440, 전체 높이) · `preview-mobile.png`(390, 전체 높이)
 
+### 실서버(GitHub Pages) 재검증 — PASS 197 / FAIL 0
+
+- `https://marcj81.github.io/portal-hub/` **HTTP 200**, HTTPS 강제, `privacy.html` 200, CSS·JS·폰트 8종 200
+- 요청 11건 전부 같은 도메인 → **콘솔 오류 0 · 페이지 오류 0 · 실패 요청 0 · 4xx/5xx 0 · 외부 요청 0건**
+- 가로 넘침 0 (1440 · 768 · 390), 카드 17장, 절약 계산기 월 344,000원 → 전체 해제 0원 복귀, 문의 폼 오류 5종 → 문안 생성 → 클립보드 일치
+- 도구 17종 카드 링크 **17개 모두 HTTP 200**
+- DOMContentLoaded 270ms · load 675ms
+
 ---
 
 ## 5. 디자인 — 에디토리얼 톤
