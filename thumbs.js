@@ -629,25 +629,25 @@
     /* 25 작업 증빙 리포트 — 체크된 완료 목록 + 소요시간 배지 + 공유 링크 */
     proof: function () {
       var rows = [0, 1, 2].map(function (i) {
-        var y = 74 + i * 30;
+        var y = 72 + i * 30;
         return '<rect class="t-card" x="26" y="' + y + '" width="190" height="22" rx="5"/>' +
           '<path class="t-stroke-accent" d="M34 ' + (y + 11) + 'l4 4 6-7" fill="none" stroke-width="2"/>' +
           '<rect class="t-sub" x="52" y="' + (y + 8) + '" width="' + (104 - i * 18) + '" height="4" rx="2"/>' +
           '<rect class="t-faint" x="176" y="' + (y + 7) + '" width="30" height="8" rx="4"/>';
       }).join('');
       return wrap(
-        '<text class="t-text t-text-sub" x="26" y="32" font-size="9">PROOF OF WORK</text>' +
-        '<rect class="t-card" x="26" y="44" width="190" height="20" rx="5"/>' +
-        '<rect class="t-ink" x="34" y="50" width="72" height="8" rx="3"/>' +
-        '<rect class="t-faint" x="150" y="50" width="58" height="8" rx="3"/>' +
+        '<text class="t-text t-text-sub" x="26" y="30" font-size="9">PROOF OF WORK</text>' +
+        '<rect class="t-card" x="26" y="42" width="190" height="20" rx="5"/>' +
+        '<rect class="t-ink" x="34" y="48" width="72" height="8" rx="3"/>' +
+        '<rect class="t-faint" x="150" y="48" width="58" height="8" rx="3"/>' +
         rows +
-        '<rect class="t-accent-soft" x="232" y="44" width="62" height="62" rx="12"/>' +
-        '<text class="t-text t-text-accent" x="263" y="78" font-size="19" text-anchor="middle" font-weight="600">12h</text>' +
-        '<text class="t-text t-text-accent" x="263" y="94" font-size="7" text-anchor="middle">이번 주</text>' +
+        '<rect class="t-accent-soft" x="232" y="54" width="62" height="58" rx="12"/>' +
+        '<text class="t-text t-text-accent" x="263" y="84" font-size="19" text-anchor="middle" font-weight="600">12h</text>' +
+        '<text class="t-text t-text-accent" x="263" y="100" font-size="7" text-anchor="middle">이번 주</text>' +
         '<text class="t-text t-text-ink" x="232" y="132" font-size="9">공유 링크</text>' +
-        '<text class="t-text t-text-sub" x="232" y="146" font-size="7">?d= 한 줄</text>' +
-        '<text class="t-text t-text-accent" x="232" y="172" font-size="10" font-weight="600">A4 PDF</text>' +
-        '<text class="t-text t-text-sub" x="26" y="176" font-size="7">완료 6건 · 증빙률 100%</text>',
+        '<text class="t-text t-text-sub" x="232" y="145" font-size="7">?d= 한 줄</text>' +
+        '<text class="t-text t-text-accent" x="232" y="166" font-size="10" font-weight="600">A4 PDF</text>' +
+        '<text class="t-text t-text-sub" x="26" y="166" font-size="7">완료 6건 · 증빙률 100%</text>',
         '체크된 완료 목록과 소요시간 배지, 공유 링크가 있는 썸네일'
       );
     },
@@ -655,26 +655,26 @@
     /* 26 시세 레이더 — 평균가 카드 + 가격 레인지 바 + 최저·평균·최고 마커 */
     priceradar: function () {
       return wrap(
-        '<text class="t-text t-text-sub" x="26" y="32" font-size="9">PRICE RADAR KR</text>' +
-        '<circle class="t-stroke-line" cx="270" cy="28" r="14" fill="none" stroke-width="2"/>' +
-        '<path class="t-stroke-accent" d="M270 28l9-6" stroke-width="2" fill="none"/>' +
-        '<circle class="t-accent" cx="270" cy="28" r="2.4"/>' +
-        '<rect class="t-card" x="26" y="46" width="268" height="88" rx="10"/>' +
-        '<text class="t-text t-text-sub" x="40" y="68" font-size="8">엔진오일 + 오일필터</text>' +
-        '<text class="t-text t-text-ink" x="40" y="100" font-size="24" font-weight="600">8.0만</text>' +
-        '<text class="t-text t-text-sub" x="40" y="118" font-size="7">평균가 · 부품+공임</text>' +
-        '<rect class="t-accent-soft" x="196" y="62" width="84" height="26" rx="7"/>' +
-        '<text class="t-text t-text-accent" x="238" y="79" font-size="9" text-anchor="middle">최저 대비 1.3×</text>' +
-        '<text class="t-text t-text-sub" x="196" y="104" font-size="7">6업종 54품목</text>' +
-        '<text class="t-text t-text-sub" x="196" y="118" font-size="7">공개 자료 기준</text>' +
-        '<rect class="t-faint" x="26" y="154" width="268" height="12" rx="6"/>' +
-        '<rect class="t-line" x="26" y="154" width="176" height="12" rx="6"/>' +
-        '<circle class="t-ink" cx="64" cy="160" r="4"/>' +
-        '<circle class="t-accent" cx="160" cy="160" r="7"/>' +
-        '<circle cx="252" cy="160" r="4" fill="none" stroke="#5C626A" stroke-width="2"/>' +
-        '<text class="t-text t-text-ink" x="64" y="186" font-size="7" text-anchor="middle">최저</text>' +
-        '<text class="t-text t-text-accent" x="160" y="186" font-size="7" text-anchor="middle">평균</text>' +
-        '<text class="t-text t-text-ink" x="252" y="186" font-size="7" text-anchor="middle">최고</text>',
+        '<text class="t-text t-text-sub" x="26" y="30" font-size="9">PRICE RADAR KR</text>' +
+        '<circle class="t-stroke-line" cx="270" cy="27" r="13" fill="none" stroke-width="2"/>' +
+        '<path class="t-stroke-accent" d="M270 27l8-5" stroke-width="2" fill="none"/>' +
+        '<circle class="t-accent" cx="270" cy="27" r="2.2"/>' +
+        '<rect class="t-card" x="26" y="44" width="268" height="74" rx="10"/>' +
+        '<text class="t-text t-text-sub" x="40" y="66" font-size="8">엔진오일 + 오일필터</text>' +
+        '<text class="t-text t-text-ink" x="40" y="98" font-size="22" font-weight="600">8.0만</text>' +
+        '<text class="t-text t-text-sub" x="40" y="112" font-size="7">평균가 · 부품+공임</text>' +
+        '<rect class="t-accent-soft" x="198" y="58" width="82" height="24" rx="7"/>' +
+        '<text class="t-text t-text-accent" x="239" y="74" font-size="9" text-anchor="middle">최저 대비 1.3×</text>' +
+        '<text class="t-text t-text-sub" x="198" y="100" font-size="7">6업종 54품목</text>' +
+        '<text class="t-text t-text-sub" x="198" y="112" font-size="7">공개 자료 기준</text>' +
+        '<rect class="t-faint" x="26" y="130" width="268" height="12" rx="6"/>' +
+        '<rect class="t-line" x="26" y="130" width="176" height="12" rx="6"/>' +
+        '<circle class="t-ink" cx="64" cy="136" r="4"/>' +
+        '<circle class="t-accent" cx="160" cy="136" r="7"/>' +
+        '<circle cx="252" cy="136" r="4" fill="none" stroke="#5C626A" stroke-width="2"/>' +
+        '<text class="t-text t-text-ink" x="64" y="160" font-size="7" text-anchor="middle">최저</text>' +
+        '<text class="t-text t-text-accent" x="160" y="160" font-size="7" text-anchor="middle">평균</text>' +
+        '<text class="t-text t-text-ink" x="252" y="160" font-size="7" text-anchor="middle">최고</text>',
         '평균가 카드와 가격 레인지 바가 있는 썸네일'
       );
     }
