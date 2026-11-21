@@ -46,7 +46,7 @@
     });
   }
 
-  /* ------------------------------------------------------------ 카드 17장 */
+  /* ------------------------------------------------------------ 카드 21장 */
   function cardHtml(app) {
     var live = app.live;
     var badge = live
@@ -62,6 +62,9 @@
         '<button type="button" class="card-ask" data-prefill="' + app.id + '" aria-label="' +
         app.name + ' 우리 회사용으로 제작 문의">커스텀 제작 문의</button></div>'
       : '<button type="button" class="card-cta pending" data-prefill="' + app.id + '">먼저 써 보기</button>';
+    var pro = app.pro
+      ? '<span class="card-badge pro" title="OpenAI·Gemini·Claude 키를 넣으면 Pro AI가 함께 채웁니다">Pro AI 연결</span>'
+      : '';
     var price = app.replaces
       ? '<p class="card-price"><span>대체 예시 · ' + app.replaces.name + '</span>' +
         '<b>월 ' + C.fmtKRW(app.replaces.price) + '</b></p>'
@@ -69,7 +72,7 @@
     return '<article class="card" id="app-' + app.slug + '" data-id="' + app.id + '" data-cat="' + app.category + '">' +
       '<div class="card-head"><span class="card-no">No. <b>' + (app.no < 10 ? '0' + app.no : app.no) + '</b></span>' +
       '<span class="card-cat">' + CAT_LABEL[app.category] + '</span></div>' +
-      '<figure class="card-thumb">' + badge + T.get(app.thumb, app.name) + '</figure>' +
+      '<figure class="card-thumb">' + badge + pro + T.get(app.thumb, app.name) + '</figure>' +
       '<div class="card-body">' +
         '<h3 class="card-name">' + name + '</h3>' +
         (app.lang === 'en' ? '<p class="card-en">English · ' + app.en + '</p>' : '<p class="card-en">' + app.en + '</p>') +

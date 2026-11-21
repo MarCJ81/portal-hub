@@ -373,6 +373,10 @@ button{font:inherit;color:inherit}
   border-radius:999px;padding:4px 9px;font-size:10px;color:var(--sub);
 }
 .card-badge.live{background:var(--ink);color:var(--surface);border-color:var(--ink)}
+.card-badge.pro{
+  left:auto;right:8px;background:var(--accent);color:var(--accent-ink);
+  border-color:var(--accent);font-weight:600;letter-spacing:.01em;
+}
 .card-badge .dot{width:5px;height:5px;border-radius:50%;background:currentColor;opacity:.8}
 .card-body{padding:16px 18px 0;flex:1 1 auto}
 .card-name{

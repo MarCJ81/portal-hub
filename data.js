@@ -1,11 +1,12 @@
 /* ============================================================================
  * 원탭 도구 허브 (OneTap Tools) · 데이터
- * 17종 무료 웹앱 라인업, 유료 대체 요금 참고표, 5단계 워크플로, B2B 납품 3단계.
+ * 21종 무료 웹앱 라인업, 유료 대체 요금 참고표, 5단계 워크플로, B2B 납품 3단계.
  *
  * - 배포 전 확인: CONTACT_EMAIL 한 줄만 넣으면 '메일 앱으로 보내기'가 켜집니다.
- * - live: true 인 앱만 카드 CTA가 열립니다. 지금은 17종 모두 배포 완료 상태를 전제로 true 입니다.
- * - 배포 순서: 이 허브는 라인업의 마지막(18번)에 올립니다. 1~17번 앱이 모두 라이브가 된 뒤에
- *   올려야 카드 17개의 링크가 살아 있습니다(live: true는 그 전제).
+ * - live: true 인 앱만 카드 CTA가 열립니다. 지금은 21종 모두 배포 완료 상태를 전제로 true 입니다.
+ * - pro: true 는 OpenAI·Gemini·Claude 키를 넣는 Pro AI 연결을 함께 지원하는 앱입니다(무료 모드는 키 없이 동작).
+ * - 배포 순서: 이 허브는 라인업의 마지막(22번)에 올립니다. 1~21번 앱이 모두 라이브가 된 뒤에
+ *   올려야 카드 21개의 링크가 살아 있습니다(live: true는 그 전제).
  * - 개인정보·블로그명·실명은 이 파일에 넣지 않습니다(테스트가 검사합니다).
  * ==========================================================================*/
 (function (root) {
@@ -15,9 +16,9 @@
   var CONTACT_LABEL = '운영자 메일';  // 화면에 보이는 수신자 표기
 
   var CATEGORIES = [
-    { id: 'all', label: '전체', note: '17종' },
-    { id: 'content', label: '콘텐츠·SNS', note: '4종' },
-    { id: 'commerce', label: '커머스·마케팅', note: '4종' },
+    { id: 'all', label: '전체', note: '21종' },
+    { id: 'content', label: '콘텐츠·SNS', note: '7종' },
+    { id: 'commerce', label: '커머스·마케팅', note: '5종' },
     { id: 'legal', label: '법률·세무·계약', note: '6종' },
     { id: 'utility', label: '보안·유틸', note: '3종' }
   ];
@@ -159,6 +160,40 @@
       tagline: '붙여넣은 글의 주민번호·카드·계좌를 가리고, 누르기 전에 피싱 링크를 걸러내고, 보내기 전에 사진 속 GPS를 지웁니다.',
       features: ['개인정보 자동 마스킹', '피싱 링크 위험 점수', '사진 GPS·메타 삭제'],
       replaces: { name: '개인정보 점검·마스킹 툴', price: 9000 }
+    },
+
+    /* --- 2026-11-21 추가: 사장님·1인 크리에이터용 제작 4종 --- */
+    {
+      id: 'review-reply-studio', no: 18, name: '사장님 리뷰 답글 스튜디오', en: 'Owner Reply Studio',
+      slug: 'review-reply-studio', url: 'https://marcj81.github.io/review-reply-studio/', live: true,
+      category: 'commerce', thumb: 'reply', pro: true,
+      tagline: '리뷰를 붙여넣으면 별점·감정을 읽고 업종·플랫폼·말투에 맞춘 사장님 답글 3안을 만듭니다. 일괄 답글과 허위 리뷰 소명서까지.',
+      features: ['답글 3안·말투 3종', '일괄 답글 CSV', '허위 리뷰 소명서'],
+      replaces: { name: '리뷰 관리·답글 대행', price: 29000 }
+    },
+    {
+      id: 'shorts-video-studio', no: 19, name: '원탭 숏폼 스튜디오', en: 'One-Tap Shorts Studio',
+      slug: 'shorts-video-studio', url: 'https://marcj81.github.io/shorts-video-studio/', live: true,
+      category: 'content', thumb: 'shorts', pro: true,
+      tagline: '대본 한 줄로 9:16 숏폼 5컷 스토리보드를 짜고, 자막과 배경음까지 넣어 .webm 영상으로 브라우저에서 바로 녹화합니다.',
+      features: ['5컷 스토리보드', '.webm 실제 녹화', '자막 .srt·.vtt'],
+      replaces: { name: '숏폼 편집 툴 구독', price: 25000 }
+    },
+    {
+      id: 'ai-writer-studio', no: 20, name: '원탭 원고 스튜디오', en: 'One-Tap Draft Studio',
+      slug: 'ai-writer-studio', url: 'https://marcj81.github.io/ai-writer-studio/', live: true,
+      category: 'content', thumb: 'writer', pro: true,
+      tagline: '주제 한 줄과 경험 메모로 네이버 블로그·스레드 타래·상세페이지 카피를 조립하고, AI 티와 광고 위험 표현을 문장마다 점검합니다.',
+      features: ['블로그·스레드·상세', 'AI 티 실시간 점검', '2,200자 원고 목표'],
+      replaces: { name: 'AI 글쓰기 구독', price: 19000 }
+    },
+    {
+      id: 'ai-image-studio', no: 21, name: '원탭 이미지·썸네일 스튜디오', en: 'One-Tap Image Studio',
+      slug: 'ai-image-studio', url: 'https://marcj81.github.io/ai-image-studio/', live: true,
+      category: 'content', thumb: 'image', pro: true,
+      tagline: '사진 한 장으로 배경을 지우고 유튜브·인스타·스마트스토어 규격 썸네일을 만듭니다. 테마 6종에 PNG·JPG·WebP 저장.',
+      features: ['배경 투명화', '규격 5종·테마 6종', 'PNG·JPG·WebP'],
+      replaces: { name: '썸네일 제작 툴 구독', price: 15000 }
     }
   ];
 
@@ -171,15 +206,15 @@
     },
     {
       no: '02', title: '반응·경쟁·법률 검수',
-      lead: '만들기 전에 걸러 냅니다. 댓글로 수요를 확인하고, 위험 표현을 지우고, 경쟁강도를 봅니다.',
-      appIds: ['youtube-comment-analyzer', 'ad-law-checker', 'commerce-seo-studio'],
+      lead: '만들기 전에 걸러 냅니다. 댓글과 리뷰로 수요를 확인하고, 위험 표현을 지우고, 경쟁강도를 봅니다.',
+      appIds: ['youtube-comment-analyzer', 'review-reply-studio', 'ad-law-checker'],
       output: '수요 근거 1장 · 위험 표현 0건'
     },
     {
-      no: '03', title: '카드뉴스·상세페이지 제작',
-      lead: '한 번 쓴 글을 카드, 상세페이지, 숏폼 대본으로 나눠 씁니다.',
-      appIds: ['cardnews-script-studio', 'commerce-seo-studio', 'blog-seo-studio'],
-      output: '카드 8장 · 상세 카피 7단'
+      no: '03', title: '원고·카드뉴스·숏폼 제작',
+      lead: '한 번 쓴 글을 원고, 카드, 썸네일, 숏폼 영상으로 나눠 씁니다. 무료 모드만으로도 결과물이 나옵니다.',
+      appIds: ['ai-writer-studio', 'cardnews-script-studio', 'ai-image-studio', 'shorts-video-studio'],
+      output: '원고 1편 · 카드 8장 · 숏폼 1편'
     },
     {
       no: '04', title: '체험단·링크·견적서 영업',
@@ -199,7 +234,7 @@
     {
       id: 'basic', name: '기본형', tag: '1주 · 1개 도구',
       price: '80만 원부터', note: '세금계산서 발행',
-      desc: '지금 쓰는 17종 중 하나를 우리 브랜드로 바꿉니다. 로고·색·문구·도메인만 교체합니다.',
+      desc: '지금 쓰는 21종 중 하나를 우리 브랜드로 바꿉니다. 로고·색·문구·도메인만 교체합니다.',
       items: ['도구 1종 브랜드 교체', '로고·색·폰트 적용', 'GitHub Pages 또는 우리 서버에 배포', '1회 수정 2건 포함']
     },
     {
@@ -219,7 +254,7 @@
   var FAQ = [
     {
       q: '정말 무료인가요? 결제 화면이 안 나옵니다.',
-      a: '17종 모두 회원가입·결제·서버가 없습니다. 페이지 파일이 브라우저에서 도는 것이 전부라 운영 비용이 0원이고, 그래서 값을 받을 것이 없습니다. 17종 전부 광고와 추적 스크립트도 넣지 않았습니다.'
+      a: '21종 모두 회원가입·결제·서버가 없습니다. 페이지 파일이 브라우저에서 도는 것이 전부라 운영 비용이 0원이고, 그래서 값을 받을 것이 없습니다. 21종 전부 광고와 추적 스크립트도 넣지 않았습니다.'
     },
     {
       q: '입력한 내용은 어디로 가나요?',
@@ -227,7 +262,7 @@
     },
     {
       q: '"내 구독 AI 연결"은 무슨 뜻인가요?',
-      a: 'ChatGPT·Claude·Gemini 구독이나 API 키를 이미 쓰고 있다면, 도구가 만든 프롬프트를 복사해 그 대화창에 붙이면 됩니다. API 키를 직접 넣는 방식도 지원하며 키는 이 브라우저에만 저장됩니다. 대화 한도 안에서 쓰는 방식이라 별도 결제가 없습니다.'
+      a: 'ChatGPT·Claude·Gemini 구독이나 API 키를 이미 쓰고 있다면, 도구가 만든 프롬프트를 복사해 그 대화창에 붙이면 됩니다. API 키를 직접 넣는 방식도 지원하며 키는 이 브라우저에만 저장됩니다. 대화 한도 안에서 쓰는 방식이라 별도 결제가 없습니다. 리뷰 답글·숏폼·원고·이미지 스튜디오 4종은 키를 넣으면 Pro AI가 결과물을 한 번에 채우고, 키가 없어도 무료 모드로 끝까지 동작합니다.'
     },
     {
       q: '법률·세무 판단을 대신해 주나요?',
@@ -255,7 +290,7 @@
     meta: {
       total: APPS.length,
       live: APPS.filter(function (a) { return a.live; }).length,
-      version: '1.1.0',
+      version: '1.2.0',
       checked: '2026-11-21'
     }
   };

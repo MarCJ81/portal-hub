@@ -1,6 +1,6 @@
 /* ============================================================================
  * 원탭 도구 허브 (OneTap Tools) · 카드 썸네일 (자체 SVG)
- * 외부 이미지·아이콘 폰트 요청이 0건이 되도록 17종을 전부 SVG로 그립니다.
+ * 외부 이미지·아이콘 폰트 요청이 0건이 되도록 21종을 전부 SVG로 그립니다.
  * 색은 styles.css 의 토큰 클래스(t-paper, t-line, t-ink, t-accent …)를 씁니다.
  * ==========================================================================*/
 (function (root) {
@@ -425,6 +425,123 @@
         '<text class="t-text t-text-sub" x="179" y="186" font-size="7" text-anchor="middle">GPS 삭제</text>' +
         '<text class="t-text t-text-sub" x="24" y="208" font-size="8">마스킹 · 링크 진단 · 사진 메타 점검</text>',
         '가린 개인정보와 방패 표시가 있는 썸네일'
+      );
+    },
+
+    /* 18 리뷰 답글 — 별점 리뷰 + 사장님 답글 + 말투 칩 */
+    reply: function () {
+      var stars = [0, 1, 2, 3, 4].map(function (i) {
+        return '<circle class="' + (i < 2 ? 't-accent' : 't-line-fill') + '" cx="' + (32 + i * 16) + '" cy="46" r="4"/>';
+      }).join('');
+      return wrap(
+        stars +
+        '<text class="t-text t-text-sub" x="110" y="50" font-size="9" letter-spacing="1">REVIEW</text>' +
+        '<rect class="t-card" x="24" y="60" width="186" height="60" rx="8"/>' +
+        '<circle class="t-line-fill" cx="44" cy="80" r="10"/>' +
+        '<rect class="t-sub" x="62" y="72" width="48" height="4" rx="2"/>' +
+        lines(62, 84, [120, 96], 12, 't-sub') +
+        '<path class="t-stroke-accent" d="M40 124v10h12" fill="none" stroke-width="2"/>' +
+        '<rect class="t-accent-soft" x="46" y="138" width="248" height="62" rx="8"/>' +
+        '<text class="t-text t-text-ink" x="60" y="158" font-size="9">사장님 답글</text>' +
+        ['정중', '친근', '짧게'].map(function (t, i) {
+          return '<rect class="' + (i === 0 ? 't-accent' : 't-card') + '" x="' + (196 + i * 32) + '" y="148" width="28" height="13" rx="6.5"/>' +
+            '<text class="' + (i === 0 ? 't-text t-text-paper' : 't-text t-text-sub') + '" x="' + (210 + i * 32) + '" y="157" font-size="6.5" text-anchor="middle">' + t + '</text>';
+        }).join('') +
+        lines(60, 168, [120, 160, 100], 11, 't-sub') +
+        '<text class="t-text t-text-accent" x="294" y="212" font-size="8" text-anchor="end">답글 3안 · 일괄 답글</text>',
+        '별점 리뷰 아래 사장님 답글과 말투 선택 칩이 있는 썸네일'
+      );
+    },
+
+    /* 19 숏폼 — 세로 폰 프레임 + 5컷 타임라인 */
+    shorts: function () {
+      var cuts = [0, 1, 2, 3, 4].map(function (i) {
+        return '<text class="t-text t-text-sub" x="26" y="' + (48 + i * 28) + '" font-size="8">0' + (i + 1) + '</text>' +
+          '<rect class="' + (i === 0 ? 't-accent' : 't-line-fill') + '" x="44" y="' + (40 + i * 28) + '" width="' + (22 + i * 9) + '" height="10" rx="5"/>';
+      }).join('');
+      return wrap(
+        '<rect class="t-card-shadow" x="128" y="14" width="96" height="190" rx="16"/>' +
+        '<rect class="t-paper-fill" x="122" y="8" width="96" height="190" rx="16"/>' +
+        '<rect class="t-stroke-line" x="122" y="8" width="96" height="190" rx="16" fill="none"/>' +
+        '<rect class="t-accent-soft" x="132" y="20" width="76" height="122" rx="6"/>' +
+        '<circle class="t-ink" cx="170" cy="78" r="18"/>' +
+        '<path class="t-paper-fill" d="M165 69 181 78l-16 9z"/>' +
+        '<rect class="t-accent" x="132" y="150" width="22" height="4" rx="2"/>' +
+        '<rect class="t-line-fill" x="158" y="150" width="14" height="4" rx="2"/>' +
+        '<rect class="t-line-fill" x="176" y="150" width="14" height="4" rx="2"/>' +
+        '<rect class="t-line-fill" x="194" y="150" width="14" height="4" rx="2"/>' +
+        '<text class="t-text t-text-sub" x="132" y="176" font-size="7">3.8s HOOK</text>' +
+        cuts +
+        '<text class="t-text t-text-ink" x="238" y="52" font-size="14" font-weight="600">9:16</text>' +
+        '<rect class="t-accent-soft" x="234" y="64" width="70" height="16" rx="8"/>' +
+        '<text class="t-text t-text-ink" x="269" y="75" font-size="7" text-anchor="middle">.webm 녹화</text>' +
+        '<text class="t-text t-text-sub" x="234" y="102" font-size="8">자막 .srt</text>' +
+        '<rect class="t-rule" x="26" y="188" width="84" height="1"/>' +
+        '<text class="t-text t-text-sub" x="26" y="205" font-size="7.5">5컷 · 자막 · 배경음</text>',
+        '세로 폰 화면에 재생 버튼과 5컷 타임라인이 있는 썸네일'
+      );
+    },
+
+    /* 20 원고 — 원고지 + 포맷 탭 + AI 티 점검 */
+    writer: function () {
+      var tabs = ['블로그', '스레드', '상세'].map(function (t, i) {
+        return '<rect class="' + (i === 0 ? 't-accent' : 't-card') + '" x="224" y="' + (34 + i * 26) + '" width="74" height="20" rx="3"/>' +
+          '<text class="' + (i === 0 ? 't-text t-text-paper' : 't-text t-text-sub') + '" x="261" y="' + (48 + i * 26) + '" font-size="8" text-anchor="middle">' + t + '</text>';
+      }).join('');
+      var ring = 2 * Math.PI * 20;
+      return wrap(
+        '<rect class="t-card-shadow" x="26" y="16" width="186" height="188" rx="3"/>' +
+        '<rect class="t-paper-fill" x="22" y="12" width="186" height="188" rx="3"/>' +
+        '<rect class="t-stroke-line" x="22" y="12" width="186" height="188" rx="3" fill="none"/>' +
+        '<rect class="t-accent" x="36" y="40" width="118" height="6" rx="3"/>' +
+        lines(36, 58, [150, 138, 154, 116], 13, 't-sub') +
+        '<rect class="t-accent-soft" x="36" y="114" width="154" height="20" rx="2"/>' +
+        '<text class="t-text t-text-ink" x="42" y="128" font-size="8">소제목 5단</text>' +
+        lines(36, 146, [148, 126], 13, 't-sub') +
+        '<rect class="t-faint" x="36" y="176" width="152" height="1"/>' +
+        '<text class="t-text t-text-sub" x="36" y="190" font-size="7">2,200자 · 실사 사진 6곳</text>' +
+        tabs +
+        '<circle class="t-stroke-line" cx="262" cy="140" r="20" fill="none" stroke-width="5"/>' +
+        '<circle class="t-stroke-accent" cx="262" cy="140" r="20" fill="none" stroke-width="5"' +
+        ' stroke-dasharray="' + (ring * 0.06) + ' ' + ring + '" stroke-linecap="round" transform="rotate(-90 262 140)"/>' +
+        '<text class="t-text t-text-ink" x="262" y="144" font-size="10" text-anchor="middle" font-weight="600">0</text>' +
+        '<text class="t-text t-text-sub" x="262" y="176" font-size="7" text-anchor="middle">AI 티</text>' +
+        '<text class="t-text t-text-sub" x="224" y="198" font-size="7">광고 위험 표현 점검</text>',
+        '원고지와 블로그·스레드·상세 탭, AI 티 점수 고리가 있는 썸네일'
+      );
+    },
+
+    /* 21 이미지 — 캔버스 + 투명 격자 + 규격 칩 */
+    image: function () {
+      var checks = [];
+      for (var r = 0; r < 3; r++) {
+        for (var c = 0; c < 5; c++) {
+          var x = 28 + c * 20, y = 108 + r * 20;
+          if ((r + c) % 2 === 0) checks.push('<rect class="t-faint" x="' + x + '" y="' + y + '" width="20" height="20"/>');
+        }
+      }
+      return wrap(
+        '<rect class="t-card" x="22" y="20" width="196" height="150" rx="4"/>' +
+        checks.join('') +
+        '<rect class="t-accent-soft" x="28" y="26" width="100" height="72" rx="2"/>' +
+        '<circle class="t-line-fill" cx="52" cy="48" r="9"/>' +
+        '<path class="t-line-fill" d="M34 96 66 62l20 20 12-10 22 24z"/>' +
+        '<rect class="t-paper-fill" x="22" y="112" width="196" height="58" rx="4"/>' +
+        '<rect class="t-stroke-line" x="22" y="112" width="196" height="58" rx="4" fill="none"/>' +
+        '<rect class="t-accent" x="34" y="126" width="42" height="7" rx="3"/>' +
+        '<rect class="t-ink" x="82" y="126" width="86" height="7" rx="3"/>' +
+        '<text class="t-text t-text-sub" x="34" y="152" font-size="7">겨울 가습기 3만원대</text>' +
+        '<rect class="t-card" x="36" y="80" width="52" height="14" rx="7"/>' +
+        '<text class="t-text t-text-accent" x="62" y="90" font-size="7" text-anchor="middle">누끼 완료</text>' +
+        ['1280×720', '1080×1350', '1000×1000'].map(function (t, i) {
+          return '<rect class="' + (i === 0 ? 't-accent-soft' : 't-card') + '" x="228" y="' + (44 + i * 24) + '" width="72" height="18" rx="9"/>' +
+            '<text class="t-text t-text-sub" x="264" y="' + (57 + i * 24) + '" font-size="7" text-anchor="middle">' + t + '</text>';
+        }).join('') +
+        '<rect class="t-rule" x="228" y="126" width="70" height="1"/>' +
+        '<text class="t-text t-text-ink" x="228" y="146" font-size="9">테마 6종</text>' +
+        '<text class="t-text t-text-sub" x="228" y="166" font-size="7">PNG · JPG · WebP</text>' +
+        '<text class="t-text t-text-sub" x="22" y="196" font-size="8">배경 투명화 · 그림자 · 합성</text>',
+        '사진 캔버스와 투명 격자, 규격 칩이 있는 썸네일'
       );
     }
   };
