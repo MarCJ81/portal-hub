@@ -54,7 +54,7 @@ python3 uitest.py   # PASS 182  FAIL 0  (헤드리스 Chrome)
 | `data.js` | `apps[].live` | 17종 모두 `true` | 해당 앱을 GitHub Pages에 올린 뒤 `true`로. 카드 CTA가 `먼저 써 보기` → `지금 열기`로 바뀌고 상단 라이브 수·안내 문구도 자동으로 따라갑니다. |
 | `index.html` | `canonical` / `og:url` / JSON-LD `url` | `https://marcj81.github.io/portal-hub/` | 저장소 이름이 다르면 세 곳을 같은 값으로. |
 
-> **링크 상태(2026-11-21 실측)** — 17개 앱 주소를 직접 열어 본 결과 **17개 모두 HTTP 200** 입니다. 이 허브 자신은 `https://marcj81.github.io/portal-hub/` 에서 열립니다(GitHub Pages, 브랜치 `main` 루트 · HTTPS 강제).
+> **링크 상태(2026-11-21 실측)** — 17개 앱 주소를 직접 열어 본 결과 **17개 모두 HTTP 200** 입니다. 이 허브 자신은 `https://marcj81.github.io/portal-hub/` 에서 열립니다(GitHub Pages, 게시 브랜치 `gh-pages` — `main`과 같은 내용 · HTTPS 강제).
 
 ---
 
