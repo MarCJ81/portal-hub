@@ -1,6 +1,6 @@
 /* ============================================================================
  * 원탭 도구 허브 (OneTap Tools) · 데이터
- * 26장 카드(무료 웹앱 25종 + 유료 B2B 오퍼 1종), 유료 대체 요금 참고표,
+ * 28장 카드(무료 웹앱 27종 + 유료 B2B 오퍼 1종), 유료 대체 요금 참고표,
  * 5단계 워크플로, B2B 납품 3단계.
  *
  * - 배포 전 확인: CONTACT_EMAIL 한 줄만 넣으면 '메일 앱으로 보내기'가 켜집니다.
@@ -18,10 +18,11 @@
   var CONTACT_LABEL = '운영자 메일';  // 화면에 보이는 수신자 표기
 
   var CATEGORIES = [
-    { id: 'all', label: '전체', note: '26장' },
+    { id: 'all', label: '전체', note: '28장' },
     { id: 'content', label: '콘텐츠·SNS', note: '8종' },
-    { id: 'commerce', label: '커머스·마케팅', note: '7종' },
+    { id: 'commerce', label: '커머스·마케팅', note: '8종' },
     { id: 'legal', label: '법률·세무·계약', note: '7종' },
+    { id: 'work', label: '업무·회의', note: '1종' },
     { id: 'utility', label: '보안·유틸', note: '4종' }
   ];
 
@@ -295,6 +296,28 @@
       tagline: '수리·청소·치과·이사 6업종 54품목 시세를 보여 주고, 받은 견적이 바가지인지 판정합니다.',
       features: ['6업종 54품목 시세', '받은 견적 판정', 'JSON·CSV 내보내기'],
       replaces: { name: '시세 조회·견적 비교 서비스', price: 11000 }
+    },
+    {
+      id: 'onetap-team-room', no: 27, name: '원탭 AI 팀 회의실', en: 'OneTap AI Team Room',
+      slug: 'onetap-team-room', url: 'https://marcj81.github.io/onetap-team-room/', live: true,
+      category: 'work', thumb: 'teamroom', badge: 'NEW', pro: true,
+      bento: { cols: 2, rows: 1, skin: 'light' },
+      metric: { value: '8부서', label: '2.5D 디오라마 회의실' },
+      short: '안건 하나로 8개 부서가 회의하고, 부서별 아웃풋과 액션까지 남깁니다.',
+      tagline: '안건 하나를 넣으면 기획·개발·디자인·영상·그로스·영업·재무 리드가 순서대로 발언하고, 교차검수가 숫자·출처·담당을 다시 봅니다. 남는 것은 부서별 아웃풋·프로젝트 기록·액션 체크리스트입니다. 무료 모드는 키 없이, Pro는 내 GPT·Gemini·Claude 키로.',
+      features: ['8역할 순차 발언', '교차검수 재확인', '부서별 아웃풋·회의록'],
+      replaces: { name: 'AI 회의·협업 노트 SaaS', price: 29000 }
+    },
+    {
+      id: 'onetap-ad-audit', no: 28, name: '원탭 광고 AI 감사 스튜디오', en: 'OneTap Ad Audit Studio',
+      slug: 'onetap-ad-audit', url: 'https://marcj81.github.io/onetap-ad-audit/', live: true,
+      category: 'commerce', thumb: 'adaudit', badge: 'NEW', pro: true,
+      bento: { cols: 2, rows: 1, skin: 'light' },
+      metric: { value: 'OFF', label: '적자 캠페인 예산 재배분' },
+      short: '메타·네이버 광고 CSV로 적자 캠페인을 걸러 예산을 다시 나눕니다.',
+      tagline: '광고 관리자에서 내려받은 CSV(메타·네이버, CP949 포함)를 그대로 넣으면 카피·데이터·예산 세 에이전트가 캠페인을 하나씩 감사합니다. 적자 캠페인에는 OFF를 권하고 남는 예산은 ROAS 비중으로 다시 나눠, 예상 절감액·추가 매출·블렌디드 ROAS와 CSV 예산안·MD 리포트로 정리합니다. 무료 모드는 키 없이 규칙 엔진으로 감사하고, Pro는 내 GPT·Gemini·Claude 키로 카피와 타겟까지 다시 씁니다.',
+      features: ['메타·네이버 CSV·CP949', 'OFF 권장·예산 재배분', 'CSV 예산안·MD 리포트'],
+      replaces: { name: '광고 관리·예산 최적화 툴', price: 39000 }
     }
   ];
 
@@ -355,7 +378,7 @@
   var FAQ = [
     {
       q: '정말 무료인가요? 결제 화면이 안 나옵니다.',
-      a: '무료 도구 25종은 회원가입·결제·서버가 없습니다. 페이지 파일이 브라우저에서 도는 것이 전부라 운영 비용이 0원이고, 그래서 값을 받을 것이 없습니다. 광고와 추적 스크립트도 넣지 않았습니다. 11번 원탭 백오피스만 사람이 붙는 유료 대행 서비스라 카드에 요금을 적어 두었습니다.'
+      a: '무료 도구 27종은 회원가입·결제·서버가 없습니다. 페이지 파일이 브라우저에서 도는 것이 전부라 운영 비용이 0원이고, 그래서 값을 받을 것이 없습니다. 광고와 추적 스크립트도 넣지 않았습니다. 11번 원탭 백오피스만 사람이 붙는 유료 대행 서비스라 카드에 요금을 적어 두었습니다.'
     },
     {
       q: '입력한 내용은 어디로 가나요?',
@@ -392,8 +415,8 @@
       total: APPS.length,
       free: APPS.filter(function (a) { return !a.offer; }).length,
       live: APPS.filter(function (a) { return a.live; }).length,
-      version: '2.1.0',
-      checked: '2026-11-22'
+      version: '2.2.0',
+      checked: '2026-11-23'
     }
   };
 

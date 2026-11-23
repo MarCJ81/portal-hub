@@ -1,6 +1,6 @@
 /* ============================================================================
  * 원탭 도구 허브 (OneTap Tools) · 카드 썸네일 (자체 SVG)
- * 외부 이미지·아이콘 폰트 요청이 0건이 되도록 26종을 전부 SVG로 그립니다.
+ * 외부 이미지·아이콘 폰트 요청이 0건이 되도록 28종을 전부 SVG로 그립니다.
  * 색은 styles.css 의 토큰 클래스(t-paper, t-line, t-ink, t-accent …)를 씁니다.
  * ==========================================================================*/
 (function (root) {
@@ -676,6 +676,72 @@
         '<text class="t-text t-text-accent" x="160" y="160" font-size="7" text-anchor="middle">평균</text>' +
         '<text class="t-text t-text-ink" x="252" y="160" font-size="7" text-anchor="middle">최고</text>',
         '평균가 카드와 가격 레인지 바가 있는 썸네일'
+      );
+    },
+
+    /* 27 팀 회의실 — 회의 테이블 8석 + 부서 모니터 + 말풍선 */
+    teamroom: function () {
+      var seats = [0, 1, 2, 3, 4, 5, 6, 7].map(function (i) {
+        var x = 78 + (i % 4) * 56;
+        var y = i < 4 ? 96 : 150;
+        return '<circle class="t-sub" cx="' + x + '" cy="' + y + '" r="8"/>' +
+          (i === 2 ? '<circle class="t-stroke-accent" cx="' + x + '" cy="' + y + '" r="12" fill="none" stroke-width="2"/>' : '');
+      }).join('');
+      var rooms = [0, 1, 2, 3, 4, 5].map(function (i) {
+        var x = 22 + i * 21;
+        return '<rect class="' + (i === 2 ? 't-accent-soft' : 't-faint') + '" x="' + x + '" y="' + 20 +
+          '" width="17" height="12" rx="3"/>' +
+          '<rect class="' + (i === 2 ? 't-accent' : 't-line') + '" x="' + x + '" y="' + 34 +
+          '" width="17" height="2" rx="1"/>';
+      }).join('');
+      return wrap(
+        rooms +
+        '<text class="t-text t-text-sub" x="274" y="30" font-size="8" text-anchor="end">8 DEPTS</text>' +
+        '<ellipse class="t-card" cx="164" cy="123" rx="96" ry="42"/>' +
+        '<rect class="t-rule" x="164" y="44" width="1" height="18"/>' +
+        '<rect class="t-accent-soft" x="196" y="40" width="94" height="26" rx="8"/>' +
+        '<text class="t-text t-text-accent" x="243" y="50" font-size="7" text-anchor="middle">ON AIR</text>' +
+        '<text class="t-text t-text-ink" x="243" y="60" font-size="7" text-anchor="middle">디자인 리드</text>' +
+        seats +
+        '<text class="t-text t-text-ink" x="22" y="196" font-size="10">교차검수 → 액션 24</text>' +
+        '<rect class="t-faint" x="22" y="202" width="276" height="6" rx="3"/>' +
+        '<rect class="t-accent" x="22" y="202" width="186" height="6" rx="3"/>',
+        '부서 모니터와 8석 회의 테이블, 발언 말풍선이 있는 썸네일'
+      );
+    },
+
+    /* 28 광고 감사 — 캠페인 표 + OFF 판정 + 예산 재배분 막대 */
+    adaudit: function () {
+      var rows = [
+        { y: 46, w: 96, off: false },
+        { y: 70, w: 62, off: true },
+        { y: 94, w: 128, off: false }
+      ].map(function (r, i) {
+        return '<rect class="t-card" x="22" y="' + r.y + '" width="204" height="20" rx="5"/>' +
+          '<rect class="' + (r.off ? 't-line' : 't-ink') + '" x="30" y="' + (r.y + 6) + '" width="' + r.w +
+          '" height="7" rx="3"/>' +
+          (r.off
+            ? '<rect class="t-faint" x="30" y="' + (r.y + 6) + '" width="204" height="7" rx="3"/>' +
+              '<rect class="t-accent" x="176" y="' + (r.y + 4) + '" width="40" height="12" rx="6"/>' +
+              '<text class="t-text t-text-paper" x="196" y="' + (r.y + 13) + '" font-size="7" text-anchor="middle">OFF</text>'
+            : '');
+      }).join('');
+      return wrap(
+        '<text class="t-text t-text-sub" x="22" y="30" font-size="9">AD AUDIT</text>' +
+        '<text class="t-text t-text-sub" x="286" y="30" font-size="7" text-anchor="end">META — NAVER</text>' +
+        rows +
+        '<rect class="t-card" x="240" y="46" width="58" height="68" rx="8"/>' +
+        '<rect class="t-faint" x="240" y="46" width="58" height="60" rx="8"/>' +
+        '<rect class="t-accent" x="240" y="66" width="58" height="40" rx="0"/>' +
+        '<text class="t-text t-text-paper" x="269" y="54" font-size="8" text-anchor="middle">예산</text>' +
+        '<rect class="t-faint" x="22" y="126" width="276" height="10" rx="5"/>' +
+        '<rect class="t-ink" x="22" y="126" width="96" height="10" rx="5"/>' +
+        '<rect class="t-accent" x="118" y="126" width="146" height="10" rx="5"/>' +
+        '<text class="t-text t-text-ink" x="22" y="156" font-size="9">절감 −18%</text>' +
+        '<text class="t-text t-text-accent" x="118" y="156" font-size="9">ROAS 2.1 → 2.8</text>' +
+        '<text class="t-text t-text-sub" x="22" y="182" font-size="7">CSV 예산안 · MD 액션 리포트</text>' +
+        '<text class="t-text t-text-accent" x="22" y="202" font-size="10" font-weight="600">무료 감사 · 내 키는 선택</text>',
+        '캠페인 표, OFF 판정과 예산 재배분 막대가 있는 썸네일'
       );
     }
   };
