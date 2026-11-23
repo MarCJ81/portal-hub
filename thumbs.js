@@ -1,6 +1,6 @@
 /* ============================================================================
  * 원탭 도구 허브 (OneTap Tools) · 카드 썸네일 (자체 SVG)
- * 외부 이미지·아이콘 폰트 요청이 0건이 되도록 28종을 전부 SVG로 그립니다.
+ * 외부 이미지·아이콘 폰트 요청이 0건이 되도록 29종을 전부 SVG로 그립니다.
  * 색은 styles.css 의 토큰 클래스(t-paper, t-line, t-ink, t-accent …)를 씁니다.
  * ==========================================================================*/
 (function (root) {
@@ -742,6 +742,51 @@
         '<text class="t-text t-text-sub" x="22" y="182" font-size="7">CSV 예산안 · MD 액션 리포트</text>' +
         '<text class="t-text t-text-accent" x="22" y="202" font-size="10" font-weight="600">무료 감사 · 내 키는 선택</text>',
         '캠페인 표, OFF 판정과 예산 재배분 막대가 있는 썸네일'
+      );
+    },
+
+    /* 29 클립 팩토리 — 긴 원본 타임라인 → 9:16 클립 + 자막 */
+    clipfactory: function () {
+      var timeline = [
+        { x: 18, w: 40, cut: false },
+        { x: 62, w: 10, cut: true },
+        { x: 76, w: 34, cut: false },
+        { x: 114, w: 12, cut: true },
+        { x: 130, w: 34, cut: false }
+      ].map(function (b) {
+        return b.cut
+          ? '<rect class="t-faint" x="' + b.x + '" y="138" width="' + b.w + '" height="12" rx="3"/>'
+          : '<rect class="t-ink" x="' + b.x + '" y="138" width="' + b.w + '" height="12" rx="3"/>';
+      }).join('');
+      var caps = [44, 32, 38];
+      var captions = caps.map(function (w, i) {
+        return '<rect class="t-text-paper" x="234" y="' + (116 + i * 12) + '" width="' + w +
+          '" height="5" rx="2.5"/>';
+      }).join('');
+      return wrap(
+        '<text class="t-text t-text-sub" x="18" y="30" font-size="9">LONG CUT</text>' +
+        '<text class="t-text t-text-sub" x="302" y="30" font-size="9" text-anchor="end">9:16</text>' +
+        '<rect class="t-card" x="18" y="42" width="146" height="84" rx="8"/>' +
+        '<rect class="t-ink" x="26" y="50" width="130" height="52" rx="4"/>' +
+        '<circle class="t-paper" cx="58" cy="72" r="9"/>' +
+        '<rect class="t-faint" x="94" y="62" width="54" height="4" rx="2"/>' +
+        '<rect class="t-faint" x="94" y="72" width="38" height="4" rx="2"/>' +
+        '<rect class="t-faint" x="94" y="82" width="46" height="4" rx="2"/>' +
+        '<rect class="t-text-paper" x="30" y="90" width="34" height="5" rx="2.5"/>' +
+        '<rect class="t-stroke-line" x="18" y="138" width="146" height="12" rx="3" fill="none" stroke-width="1"/>' +
+        timeline +
+        '<path class="t-stroke-accent" d="M176 92 h22" fill="none" stroke-width="2"/>' +
+        '<path class="t-accent" d="M198 86 l10 6 -10 6 z"/>' +
+        '<rect class="t-card" x="214" y="34" width="84" height="140" rx="12"/>' +
+        '<rect class="t-ink" x="222" y="42" width="68" height="124" rx="8"/>' +
+        '<circle class="t-paper" cx="256" cy="86" r="14"/>' +
+        '<rect class="t-stroke-accent" x="230" y="56" width="52" height="90" rx="2" fill="none" stroke-width="1.5"/>' +
+        captions +
+        '<text class="t-text t-text-sub" x="18" y="170" font-size="8">죽은 초 삭제 · 장면 컷 · 피사체 추적</text>' +
+        '<text class="t-text t-text-ink" x="18" y="196" font-size="10" font-weight="600">H.264 MP4 · 클립 3개</text>' +
+        '<rect class="t-accent" x="214" y="186" width="84" height="12" rx="6"/>' +
+        '<text class="t-text t-text-paper" x="256" y="195" font-size="7" text-anchor="middle">ZIP</text>',
+        '긴 영상 타임라인에서 9:16 클립과 자막이 나오는 썸네일'
       );
     }
   };

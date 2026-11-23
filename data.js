@@ -1,6 +1,6 @@
 /* ============================================================================
  * 원탭 도구 허브 (OneTap Tools) · 데이터
- * 28장 카드(무료 웹앱 27종 + 유료 B2B 오퍼 1종), 유료 대체 요금 참고표,
+ * 29장 카드(무료 웹앱 28종 + 유료 B2B 오퍼 1종), 유료 대체 요금 참고표,
  * 5단계 워크플로, B2B 납품 3단계.
  *
  * - 배포 전 확인: CONTACT_EMAIL 한 줄만 넣으면 '메일 앱으로 보내기'가 켜집니다.
@@ -18,8 +18,8 @@
   var CONTACT_LABEL = '운영자 메일';  // 화면에 보이는 수신자 표기
 
   var CATEGORIES = [
-    { id: 'all', label: '전체', note: '28장' },
-    { id: 'content', label: '콘텐츠·SNS', note: '8종' },
+    { id: 'all', label: '전체', note: '29장' },
+    { id: 'content', label: '콘텐츠·SNS', note: '9종' },
     { id: 'commerce', label: '커머스·마케팅', note: '8종' },
     { id: 'legal', label: '법률·세무·계약', note: '7종' },
     { id: 'work', label: '업무·회의', note: '1종' },
@@ -65,7 +65,8 @@
       id: 'shorts-video-studio', no: 4, name: '원탭 숏폼 스튜디오', en: 'One-Tap Shorts Studio',
       slug: 'shorts-video-studio', url: 'https://marcj81.github.io/shorts-video-studio/', live: true,
       category: 'content', thumb: 'shorts', pro: true,
-      bento: { cols: 1, rows: 1, skin: 'studio' },
+      bento: { cols: 2, rows: 1, skin: 'studio' },
+      metric: { value: '30초', label: '대본 → 세로 영상 MP4' },
       short: '대본 한 줄로 9:16 숏폼 5컷, 자막까지 브라우저에서 녹화.',
       tagline: '대본 한 줄로 9:16 숏폼 5컷 스토리보드를 짜고, 자막과 배경음까지 넣어 .webm 영상으로 브라우저에서 바로 녹화합니다.',
       features: ['5컷 스토리보드', '.webm 실제 녹화', '자막 .srt·.vtt'],
@@ -126,7 +127,8 @@
       id: 'review-reply-studio', no: 10, name: '사장님 리뷰 답글 스튜디오', en: 'Owner Reply Studio',
       slug: 'review-reply-studio', url: 'https://marcj81.github.io/review-reply-studio/', live: true,
       category: 'commerce', thumb: 'reply', pro: true,
-      bento: { cols: 1, rows: 1, skin: 'light' },
+      bento: { cols: 2, rows: 1, skin: 'light' },
+      metric: { value: '★4.8', label: '리뷰 → 사장님 답글' },
       short: '리뷰 별점·감정을 읽고 사장님 답글 3안을 만듭니다.',
       tagline: '리뷰를 붙여넣으면 별점·감정을 읽고 업종·플랫폼·말투에 맞춘 사장님 답글 3안을 만듭니다. 일괄 답글과 허위 리뷰 소명서까지.',
       features: ['답글 3안·말투 3종', '일괄 답글 CSV', '허위 리뷰 소명서'],
@@ -318,6 +320,17 @@
       tagline: '광고 관리자에서 내려받은 CSV(메타·네이버, CP949 포함)를 그대로 넣으면 카피·데이터·예산 세 에이전트가 캠페인을 하나씩 감사합니다. 적자 캠페인에는 OFF를 권하고 남는 예산은 ROAS 비중으로 다시 나눠, 예상 절감액·추가 매출·블렌디드 ROAS와 CSV 예산안·MD 리포트로 정리합니다. 무료 모드는 키 없이 규칙 엔진으로 감사하고, Pro는 내 GPT·Gemini·Claude 키로 카피와 타겟까지 다시 씁니다.',
       features: ['메타·네이버 CSV·CP949', 'OFF 권장·예산 재배분', 'CSV 예산안·MD 리포트'],
       replaces: { name: '광고 관리·예산 최적화 툴', price: 39000 }
+    },
+    {
+      id: 'onetap-clip-factory', no: 29, name: '원탭 클립 팩토리', en: 'OneTap Clip Factory',
+      slug: 'onetap-clip-factory', url: 'https://marcj81.github.io/onetap-clip-factory/', live: true,
+      category: 'content', thumb: 'clipfactory', badge: 'NEW', pro: true,
+      bento: { cols: 2, rows: 1, skin: 'light' },
+      metric: { value: '9:16', label: '긴 영상 → 숏폼 클립' },
+      short: '긴 가로 영상을 넣으면 무음·장면 컷을 지우고 9:16 클립 MP4로 뽑습니다.',
+      tagline: '강의·브이로그·게임·인터뷰 녹화를 그대로 넣으면 20ms 음량으로 죽은 초를 지우고, 표본 프레임에서 장면 컷을 찾아 15초 안팎 클립으로 나눕니다. 클립마다 피부톤·움직임·중앙 가중으로 피사체를 따라 9:16 크롭을 옮기고, 자막 4종을 구워 실제 H.264 MP4와 ZIP을 브라우저 안에서 만듭니다. 영상은 서버로 가지 않고, 무료 AI 맛보기가 클립 자막만으로 제목·훅·해시태그를 씁니다.',
+      features: ['무음·장면 컷 자동 감지', '9:16 피사체 추적', 'H.264 MP4·ZIP 렌더'],
+      replaces: { name: '숏폼 클립 자동 편집 구독', price: 29000 }
     }
   ];
 
@@ -337,7 +350,7 @@
     {
       no: '03', title: '원고·카드뉴스·숏폼 제작',
       lead: '한 번 쓴 글을 원고, 카드, 썸네일, 숏폼 영상, 인쇄용 벡터로 나눠 씁니다. 무료 모드만으로도 결과물이 나옵니다.',
-      appIds: ['ai-writer-studio', 'cardnews-script-studio', 'ai-image-studio', 'ai-vector-studio', 'shorts-video-studio'],
+      appIds: ['ai-writer-studio', 'cardnews-script-studio', 'ai-image-studio', 'ai-vector-studio', 'shorts-video-studio', 'onetap-clip-factory'],
       output: '원고 1편 · 카드 8장 · 숏폼 1편'
     },
     {
@@ -378,7 +391,7 @@
   var FAQ = [
     {
       q: '정말 무료인가요? 결제 화면이 안 나옵니다.',
-      a: '무료 도구 27종은 회원가입·결제·서버가 없습니다. 페이지 파일이 브라우저에서 도는 것이 전부라 운영 비용이 0원이고, 그래서 값을 받을 것이 없습니다. 광고와 추적 스크립트도 넣지 않았습니다. 11번 원탭 백오피스만 사람이 붙는 유료 대행 서비스라 카드에 요금을 적어 두었습니다.'
+      a: '무료 도구 28종은 회원가입·결제·서버가 없습니다. 페이지 파일이 브라우저에서 도는 것이 전부라 운영 비용이 0원이고, 그래서 값을 받을 것이 없습니다. 광고와 추적 스크립트도 넣지 않았습니다. 11번 원탭 백오피스만 사람이 붙는 유료 대행 서비스라 카드에 요금을 적어 두었습니다.'
     },
     {
       q: '입력한 내용은 어디로 가나요?',
@@ -415,7 +428,7 @@
       total: APPS.length,
       free: APPS.filter(function (a) { return !a.offer; }).length,
       live: APPS.filter(function (a) { return a.live; }).length,
-      version: '2.2.0',
+      version: '2.3.0',
       checked: '2026-11-23'
     }
   };
