@@ -1,6 +1,6 @@
 /* ============================================================================
  * 원탭 도구 허브 (OneTap Tools) · 카드 썸네일 (자체 SVG)
- * 외부 이미지·아이콘 폰트 요청이 0건이 되도록 29종을 전부 SVG로 그립니다.
+ * 외부 이미지·아이콘 폰트 요청이 0건이 되도록 30종을 전부 SVG로 그립니다.
  * 색은 styles.css 의 토큰 클래스(t-paper, t-line, t-ink, t-accent …)를 씁니다.
  * ==========================================================================*/
 (function (root) {
@@ -787,6 +787,40 @@
         '<rect class="t-accent" x="214" y="186" width="84" height="12" rx="6"/>' +
         '<text class="t-text t-text-paper" x="256" y="195" font-size="7" text-anchor="middle">ZIP</text>',
         '긴 영상 타임라인에서 9:16 클립과 자막이 나오는 썸네일'
+      );
+    },
+
+    /* 30 HWPX 변환기 — HWPX 문서 → HWP 5.0 파일 */
+    hwpx: function () {
+      var body = [
+        '<rect class="t-ink" x="30" y="54" width="84" height="6" rx="3"/>',
+        '<rect class="t-sub" x="30" y="70" width="104" height="4" rx="2"/>',
+        '<rect class="t-sub" x="30" y="80" width="88" height="4" rx="2"/>',
+        '<rect class="t-sub" x="30" y="90" width="96" height="4" rx="2"/>',
+        '<rect class="t-stroke-line" x="30" y="106" width="106" height="48" rx="4" fill="none" stroke-width="1"/>',
+        '<rect class="t-faint" x="30" y="106" width="106" height="14" rx="0"/>',
+        '<path class="t-stroke-line" d="M30 122h106 M30 138h106 M66 106v48 M100 106v48" fill="none" stroke-width="1"/>',
+        '<rect class="t-stroke-line" x="18" y="40" width="130" height="140" rx="10" fill="none" stroke-width="1"/>'
+      ].join('');
+      var out = [
+        '<text class="t-text t-text-ink" x="237" y="98" font-size="24" font-weight="600" text-anchor="middle">HWP</text>',
+        '<rect class="t-accent" x="204" y="108" width="66" height="4" rx="2"/>',
+        '<rect class="t-sub" x="196" y="128" width="82" height="4" rx="2"/>',
+        '<rect class="t-sub" x="196" y="140" width="64" height="4" rx="2"/>',
+        '<rect class="t-stroke-line" x="172" y="40" width="130" height="140" rx="10" fill="none" stroke-width="1"/>',
+        '<rect class="t-faint" x="172" y="40" width="130" height="14" rx="0"/>'
+      ].join('');
+      return wrap(
+        '<text class="t-text t-text-sub" x="18" y="30" font-size="9">HWPX</text>' +
+        '<text class="t-text t-text-sub" x="302" y="30" font-size="9" text-anchor="end">HWP 5.0</text>' +
+        '<rect class="t-card" x="18" y="40" width="130" height="140" rx="10"/>' +
+        '<rect class="t-card" x="172" y="40" width="130" height="140" rx="10"/>' +
+        body + out +
+        '<path class="t-stroke-accent" d="M152 110h24" fill="none" stroke-width="2"/>' +
+        '<path class="t-accent" d="M180 104l10 6-10 6z"/>' +
+        '<text class="t-text t-text-sub" x="18" y="198" font-size="8">문단·표·그림 보존 · 브라우저 안에서 변환</text>' +
+        '<text class="t-text t-text-ink" x="302" y="198" font-size="10" font-weight="600" text-anchor="end">ZIP 일괄</text>',
+        'HWPX 문서가 HWP 5.0 파일로 바뀌는 썸네일'
       );
     }
   };

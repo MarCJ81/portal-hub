@@ -11,7 +11,7 @@
  * ==========================================================================*/
 'use strict';
 
-const VERSION = 'v2.3.0-hub29';
+const VERSION = 'v2.4.0-hub30';
 const PREFIX = 'onetapl-hub-';
 const CACHE = PREFIX + VERSION;
 

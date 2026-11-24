@@ -1,6 +1,6 @@
 /* ============================================================================
  * 원탭 도구 허브 (OneTap Tools) · 데이터
- * 29장 카드(무료 웹앱 28종 + 유료 B2B 오퍼 1종), 유료 대체 요금 참고표,
+ * 30장 카드(무료 웹앱 29종 + 유료 B2B 오퍼 1종), 유료 대체 요금 참고표,
  * 5단계 워크플로, B2B 납품 3단계.
  *
  * - 배포 전 확인: CONTACT_EMAIL 한 줄만 넣으면 '메일 앱으로 보내기'가 켜집니다.
@@ -18,10 +18,10 @@
   var CONTACT_LABEL = '운영자 메일';  // 화면에 보이는 수신자 표기
 
   var CATEGORIES = [
-    { id: 'all', label: '전체', note: '29장' },
+    { id: 'all', label: '전체', note: '30장' },
     { id: 'content', label: '콘텐츠·SNS', note: '9종' },
     { id: 'commerce', label: '커머스·마케팅', note: '8종' },
-    { id: 'legal', label: '법률·세무·계약', note: '7종' },
+    { id: 'legal', label: '법률·세무·계약', note: '8종' },
     { id: 'work', label: '업무·회의', note: '1종' },
     { id: 'utility', label: '보안·유틸', note: '4종' }
   ];
@@ -292,7 +292,7 @@
       id: 'price-radar-kr', no: 26, name: '깜깜이 시세 레이더', en: 'Price Radar KR',
       slug: 'price-radar-kr', url: 'https://marcj81.github.io/price-radar-kr/', live: true,
       category: 'utility', thumb: 'priceradar', badge: 'NEW',
-      bento: { cols: 2, rows: 1, skin: 'light' },
+      bento: { cols: 1, rows: 1, skin: 'light' },
       metric: { value: '54', label: '6업종 시세 품목' },
       short: '수리·청소·치과·이사 시세를 최저·평균·최고가로 비교합니다.',
       tagline: '수리·청소·치과·이사 6업종 54품목 시세를 보여 주고, 받은 견적이 바가지인지 판정합니다.',
@@ -314,7 +314,7 @@
       id: 'onetap-ad-audit', no: 28, name: '원탭 광고 AI 감사 스튜디오', en: 'OneTap Ad Audit Studio',
       slug: 'onetap-ad-audit', url: 'https://marcj81.github.io/onetap-ad-audit/', live: true,
       category: 'commerce', thumb: 'adaudit', badge: 'NEW', pro: true,
-      bento: { cols: 2, rows: 1, skin: 'light' },
+      bento: { cols: 1, rows: 1, skin: 'light' },
       metric: { value: 'OFF', label: '적자 캠페인 예산 재배분' },
       short: '메타·네이버 광고 CSV로 적자 캠페인을 걸러 예산을 다시 나눕니다.',
       tagline: '광고 관리자에서 내려받은 CSV(메타·네이버, CP949 포함)를 그대로 넣으면 카피·데이터·예산 세 에이전트가 캠페인을 하나씩 감사합니다. 적자 캠페인에는 OFF를 권하고 남는 예산은 ROAS 비중으로 다시 나눠, 예상 절감액·추가 매출·블렌디드 ROAS와 CSV 예산안·MD 리포트로 정리합니다. 무료 모드는 키 없이 규칙 엔진으로 감사하고, Pro는 내 GPT·Gemini·Claude 키로 카피와 타겟까지 다시 씁니다.',
@@ -331,6 +331,17 @@
       tagline: '강의·브이로그·게임·인터뷰 녹화를 그대로 넣으면 20ms 음량으로 죽은 초를 지우고, 표본 프레임에서 장면 컷을 찾아 15초 안팎 클립으로 나눕니다. 클립마다 피부톤·움직임·중앙 가중으로 피사체를 따라 9:16 크롭을 옮기고, 자막 4종을 구워 실제 H.264 MP4와 ZIP을 브라우저 안에서 만듭니다. 영상은 서버로 가지 않고, 무료 AI 맛보기가 클립 자막만으로 제목·훅·해시태그를 씁니다.',
       features: ['무음·장면 컷 자동 감지', '9:16 피사체 추적', 'H.264 MP4·ZIP 렌더'],
       replaces: { name: '숏폼 클립 자동 편집 구독', price: 29000 }
+    },
+    {
+      id: 'onetap-hwpx-converter', no: 30, name: '원탭 HWPX 변환기', en: 'OneTap HWPX Converter',
+      slug: 'onetap-hwpx-converter', url: 'https://marcj81.github.io/onetap-hwpx-converter/', live: true,
+      category: 'legal', thumb: 'hwpx', badge: 'NEW',
+      bento: { cols: 2, rows: 1, skin: 'light' },
+      metric: { value: 'HWP 5.0', label: 'HWPX → HWP 변환' },
+      short: '한글 2014 이후 HWPX 문서를 HWP 5.0으로, 서식·표·그림 그대로.',
+      tagline: '한글 2014 이후가 쓰는 HWPX 문서를 예전 HWP 5.0 파일로 바꿉니다. 글자 모양·문단 정렬·병합 셀·그림을 옮기고 여러 개를 한 번에 변환해 ZIP으로 받습니다. 변환 전 문서 진단과 본문 미리보기, 만들어진 HWP의 글자 되읽기까지 브라우저 안에서 끝나고 파일은 서버로 가지 않습니다.',
+      features: ['HWPX → HWP 5.0', '서식·표·그림 보존', '일괄 변환·ZIP'],
+      replaces: { name: '문서 변환 프로그램 구독', price: 11000 }
     }
   ];
 
@@ -428,8 +439,8 @@
       total: APPS.length,
       free: APPS.filter(function (a) { return !a.offer; }).length,
       live: APPS.filter(function (a) { return a.live; }).length,
-      version: '2.3.0',
-      checked: '2026-11-23'
+      version: '2.4.0',
+      checked: '2026-11-24'
     }
   };
 
