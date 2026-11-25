@@ -1,6 +1,6 @@
 /* ============================================================================
  * 원탭 도구 허브 (OneTap Tools) · 데이터
- * 30장 카드(무료 웹앱 29종 + 유료 B2B 오퍼 1종), 유료 대체 요금 참고표,
+ * 31장 카드(무료 웹앱 30종 + 유료 B2B 오퍼 1종), 유료 대체 요금 참고표,
  * 5단계 워크플로, B2B 납품 3단계.
  *
  * - 배포 전 확인: CONTACT_EMAIL 한 줄만 넣으면 '메일 앱으로 보내기'가 켜집니다.
@@ -18,12 +18,12 @@
   var CONTACT_LABEL = '운영자 메일';  // 화면에 보이는 수신자 표기
 
   var CATEGORIES = [
-    { id: 'all', label: '전체', note: '30장' },
+    { id: 'all', label: '전체', note: '31장' },
     { id: 'content', label: '콘텐츠·SNS', note: '9종' },
     { id: 'commerce', label: '커머스·마케팅', note: '8종' },
     { id: 'legal', label: '법률·세무·계약', note: '8종' },
     { id: 'work', label: '업무·회의', note: '1종' },
-    { id: 'utility', label: '보안·유틸', note: '4종' }
+    { id: 'utility', label: '보안·유틸', note: '5종' }
   ];
 
   /* price: 1인 기준 월 참고액(원). 공개 요금제를 2026-11에 확인해 반올림한 값. */
@@ -292,7 +292,7 @@
       id: 'price-radar-kr', no: 26, name: '깜깜이 시세 레이더', en: 'Price Radar KR',
       slug: 'price-radar-kr', url: 'https://marcj81.github.io/price-radar-kr/', live: true,
       category: 'utility', thumb: 'priceradar', badge: 'NEW',
-      bento: { cols: 1, rows: 1, skin: 'light' },
+      bento: { cols: 2, rows: 1, skin: 'light' },
       metric: { value: '54', label: '6업종 시세 품목' },
       short: '수리·청소·치과·이사 시세를 최저·평균·최고가로 비교합니다.',
       tagline: '수리·청소·치과·이사 6업종 54품목 시세를 보여 주고, 받은 견적이 바가지인지 판정합니다.',
@@ -314,7 +314,7 @@
       id: 'onetap-ad-audit', no: 28, name: '원탭 광고 AI 감사 스튜디오', en: 'OneTap Ad Audit Studio',
       slug: 'onetap-ad-audit', url: 'https://marcj81.github.io/onetap-ad-audit/', live: true,
       category: 'commerce', thumb: 'adaudit', badge: 'NEW', pro: true,
-      bento: { cols: 1, rows: 1, skin: 'light' },
+      bento: { cols: 2, rows: 1, skin: 'light' },
       metric: { value: 'OFF', label: '적자 캠페인 예산 재배분' },
       short: '메타·네이버 광고 CSV로 적자 캠페인을 걸러 예산을 다시 나눕니다.',
       tagline: '광고 관리자에서 내려받은 CSV(메타·네이버, CP949 포함)를 그대로 넣으면 카피·데이터·예산 세 에이전트가 캠페인을 하나씩 감사합니다. 적자 캠페인에는 OFF를 권하고 남는 예산은 ROAS 비중으로 다시 나눠, 예상 절감액·추가 매출·블렌디드 ROAS와 CSV 예산안·MD 리포트로 정리합니다. 무료 모드는 키 없이 규칙 엔진으로 감사하고, Pro는 내 GPT·Gemini·Claude 키로 카피와 타겟까지 다시 씁니다.',
@@ -342,6 +342,17 @@
       tagline: '한글 2014 이후가 쓰는 HWPX 문서를 예전 HWP 5.0 파일로 바꿉니다. 글자 모양·문단 정렬·병합 셀·그림을 옮기고 여러 개를 한 번에 변환해 ZIP으로 받습니다. 변환 전 문서 진단과 본문 미리보기, 만들어진 HWP의 글자 되읽기까지 브라우저 안에서 끝나고 파일은 서버로 가지 않습니다.',
       features: ['HWPX → HWP 5.0', '서식·표·그림 보존', '일괄 변환·ZIP'],
       replaces: { name: '문서 변환 프로그램 구독', price: 11000 }
+    },
+    {
+      id: 'onetap-webapp-shield', no: 31, name: '원탭 웹앱 실드', en: 'OneTap WebApp Shield',
+      slug: 'onetap-webapp-shield', url: 'https://marcj81.github.io/onetap-webapp-shield/', live: true,
+      category: 'utility', thumb: 'shield', badge: 'NEW',
+      bento: { cols: 2, rows: 1, skin: 'light' },
+      metric: { value: '86 규칙', label: '시크릿·SAST·설정 검사' },
+      short: 'AI로 만든 웹앱의 키 유출·RLS 누락·XSS·CORS를 찾고, 막는 설정까지.',
+      tagline: '코드·폴더·GitHub 공개 저장소·배포 URL을 넣으면 시크릿 38종과 코드 취약점 37종, 파일 설정 11종을 찾아 100점으로 채점합니다. 이어서 호스팅별 보안 헤더, 쓰는 서비스만 고르는 CSP, GitHub Actions가 든 7파일 가드레일 키트를 만들고, 의존성 CVE는 OSV.dev에서 실제 조회합니다. 브라우저가 읽지 못한 항목은 초록 체크 대신 미확인으로 남깁니다.',
+      features: ['시크릿·SAST 86규칙', '보안 헤더·CSP·CI 키트', 'OSV.dev CVE 실조회'],
+      replaces: { name: '웹 보안 스캐너 구독', price: 29000 }
     }
   ];
 
@@ -402,7 +413,7 @@
   var FAQ = [
     {
       q: '정말 무료인가요? 결제 화면이 안 나옵니다.',
-      a: '무료 도구 28종은 회원가입·결제·서버가 없습니다. 페이지 파일이 브라우저에서 도는 것이 전부라 운영 비용이 0원이고, 그래서 값을 받을 것이 없습니다. 광고와 추적 스크립트도 넣지 않았습니다. 11번 원탭 백오피스만 사람이 붙는 유료 대행 서비스라 카드에 요금을 적어 두었습니다.'
+      a: '무료 도구 30종은 회원가입·결제·서버가 없습니다. 페이지 파일이 브라우저에서 도는 것이 전부라 운영 비용이 0원이고, 그래서 값을 받을 것이 없습니다. 광고와 추적 스크립트도 넣지 않았습니다. 11번 원탭 백오피스만 사람이 붙는 유료 대행 서비스라 카드에 요금을 적어 두었습니다.'
     },
     {
       q: '입력한 내용은 어디로 가나요?',
@@ -439,8 +450,8 @@
       total: APPS.length,
       free: APPS.filter(function (a) { return !a.offer; }).length,
       live: APPS.filter(function (a) { return a.live; }).length,
-      version: '2.4.0',
-      checked: '2026-11-24'
+      version: '2.5.0',
+      checked: '2026-11-25'
     }
   };
 

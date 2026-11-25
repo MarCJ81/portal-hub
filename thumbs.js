@@ -1,6 +1,6 @@
 /* ============================================================================
  * 원탭 도구 허브 (OneTap Tools) · 카드 썸네일 (자체 SVG)
- * 외부 이미지·아이콘 폰트 요청이 0건이 되도록 30종을 전부 SVG로 그립니다.
+ * 외부 이미지·아이콘 폰트 요청이 0건이 되도록 31종을 전부 SVG로 그립니다.
  * 색은 styles.css 의 토큰 클래스(t-paper, t-line, t-ink, t-accent …)를 씁니다.
  * ==========================================================================*/
 (function (root) {
@@ -821,6 +821,35 @@
         '<text class="t-text t-text-sub" x="18" y="198" font-size="8">문단·표·그림 보존 · 브라우저 안에서 변환</text>' +
         '<text class="t-text t-text-ink" x="302" y="198" font-size="10" font-weight="600" text-anchor="end">ZIP 일괄</text>',
         'HWPX 문서가 HWP 5.0 파일로 바뀌는 썸네일'
+      );
+    },
+
+    /* 31 웹앱 실드 — 코드 스캔 줄 + 방패 체크 + 86 규칙 */
+    shield: function () {
+      var rows = [
+        { y: 52, w: 118, cls: 't-sub' },
+        { y: 66, w: 92, cls: 't-ink' },
+        { y: 80, w: 132, cls: 't-sub' }
+      ].map(function (r, i) {
+        var hot = i === 1;
+        return '<rect class="t-' + (hot ? 'accent-soft' : 'faint') + '" x="22" y="' + (r.y - 9) +
+          '" width="168" height="18" rx="4"/>' +
+          '<rect class="' + (hot ? 't-accent' : r.cls) + '" x="30" y="' + (r.y - 2) +
+          '" width="' + r.w + '" height="4" rx="2"/>';
+      }).join('');
+      return wrap(
+        '<text class="t-text t-text-sub" x="22" y="32" font-size="9">SCAN · src/app.js</text>' +
+        rows +
+        '<rect class="t-line-fill" x="206" y="34" width="92" height="92" rx="10"/>' +
+        '<path class="t-line-fill" d="M252 44l30 11v23c0 19-13 31-30 38-17-7-30-19-30-38V55z"/>' +
+        '<path class="t-stroke-accent" d="M240 84l8 9 17-19" fill="none" stroke-width="3.4" stroke-linecap="round" stroke-linejoin="round"/>' +
+        '<text class="t-text t-text-ink" x="252" y="150" font-size="17" text-anchor="middle" font-weight="600">86</text>' +
+        '<text class="t-text t-text-sub" x="252" y="164" font-size="8" text-anchor="middle">규칙 검사</text>' +
+        '<rect class="t-accent" x="22" y="140" width="104" height="16" rx="8"/>' +
+        '<text class="t-text t-text-paper" x="74" y="151" font-size="8" text-anchor="middle">키 유출 3건</text>' +
+        '<text class="t-text t-text-sub" x="22" y="196" font-size="8">시크릿 · RLS · XSS · CORS · CVE</text>' +
+        '<text class="t-text t-text-ink" x="298" y="196" font-size="9" text-anchor="end" font-weight="600">헤더·CSP·CI</text>',
+        '코드 줄을 검사해 방패 체크와 86 규칙을 보여 주는 썸네일'
       );
     }
   };
