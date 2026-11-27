@@ -145,7 +145,7 @@
           <span class="kicker-vol">VOL.30</span>
           무료 도구 · 서버 0 · 가입 0 · <time datetime="2026-11-23">2026.11</time>
         </p>
-        <h1 id="hero-title">월 구독료 없이 평생 쓰는<br><em>1인 사업자·마케터</em><br><span data-en="Thirty free tools,">무료 도구</span> <span class="mark" data-en="yours to keep">30선</span></h1>
+        <h1 id="hero-title">월 구독료 없이 평생 쓰는<br><em>1인 사업자·마케터</em><br><span data-en="Free web tools,">무료 도구</span> <span class="mark" data-en="yours to keep">30선</span></h1>
         <p class="lead">
           키워드 발굴부터 블로그 원고, 카드뉴스, 숏폼 영상, 썸네일, 인쇄용 벡터 변환,
           리뷰 답글, 광고 문구 검수, 견적서와 수리 시세 비교, 작업 증빙 리포트, 계약서 서명,
@@ -251,6 +251,11 @@
           <button class="search-clear" id="search-clear" type="button" aria-label="검색어 지우기" hidden>×</button>
         </div>
         <div class="chips" id="filter-chips" role="group" aria-label="카테고리 필터"></div>
+        <label class="switch" id="korea-switch" hidden>
+          <input type="checkbox" id="korea-only">
+          <span class="switch-track" aria-hidden="true"><span class="switch-dot"></span></span>
+          <span class="switch-label">🇰🇷 한국 전용 도구 9종</span>
+        </label>
         <label class="switch">
           <input type="checkbox" id="live-only">
           <span class="switch-track" aria-hidden="true"><span class="switch-dot"></span></span>
@@ -261,7 +266,7 @@
       <p class="result-line" id="result-count" role="status" aria-live="polite">31장</p>
       <div class="bento" id="app-grid"></div>
       <p class="empty" id="empty-state" hidden>
-        검색어에 맞는 도구가 없습니다. <button type="button" class="link-btn" id="empty-reset">전체 31장 보기</button>
+        검색어에 맞는 도구가 없습니다. <button type="button" class="link-btn" id="empty-korea" hidden>한국 전용 도구 9종 보기</button> <button type="button" class="link-btn" id="empty-reset">전체 31장 보기</button>
       </p>
 
       <p class="tools-note">
@@ -491,7 +496,7 @@
       <span class="brand-mark" aria-hidden="true">1</span>
       <div>
         <strong>원탭 도구 허브 (OneTap Tools)</strong>
-        <p>무료 웹앱 30종 · <span id="foot-version">v2.5.0</span> · 2026.11 기준</p>
+        <p>무료 웹앱 30종 · <span id="foot-version">v2.5.1</span> · 2026.11 기준</p>
       </div>
     </div>
     <nav class="foot-nav" aria-label="바닥글">

@@ -17,13 +17,15 @@
   var CAT_LABEL = {};
   D.categories.forEach(function (c) { CAT_LABEL[c.id] = c.label; });
 
-  var FREE = C.freeApps(D.apps);
+  var KOREA_ONLY = D.koreaOnly || [];
+  var noMap = {};
 
   var state = {
     category: 'all',
     query: '',
     liveOnly: false,
-    picks: FREE.map(function (a) { return a.id; })
+    koreaTools: false,
+    picks: []
   };
 
   function ko() { return !(window.OneTapLang && window.OneTapLang.current) || window.OneTapLang.current() === 'ko'; }
@@ -35,10 +37,32 @@
   }
   function num(n) { return ko() ? C.fmtKRW(n).replace('원', '') : Number(n || 0).toLocaleString('en-US'); }
 
+  /* ── 지역 필터 ───────────────────────────────────────────────────────
+     한국어 화면은 31장 전부, 영어 화면은 한국 전용 9종을 집어 두고 글로벌
+     22장만 보여 줍니다. 방문자가 스위치를 켜면 9종까지 다시 깔립니다. */
+  function isKoreaOnly(app) {
+    return !!app && KOREA_ONLY.indexOf(app.id) >= 0;
+  }
+
+  function koreaOn() { return ko() || state.koreaTools; }
+
+  function visibleApps() {
+    if (koreaOn()) return D.apps;
+    return D.apps.filter(function (a) { return !isKoreaOnly(a); });
+  }
+
+  function freeVisible() { return C.freeApps(visibleApps()); }
+
+  function hiddenKorea() {
+    if (koreaOn()) return [];
+    return D.apps.filter(isKoreaOnly);
+  }
+
   /* ------------------------------------------------------------ 필터 칩 */
   function renderChips() {
     var box = $('#filter-chips');
-    var counts = C.categoryCounts(D.apps);
+    var shelf = visibleApps();
+    var counts = C.categoryCounts(shelf);
     box.innerHTML = D.categories.map(function (c) {
       var n = c.id === 'all' ? counts.all : (counts[c.id] || 0);
       return '<button type="button" class="chip" data-cat="' + c.id + '" aria-pressed="' +
@@ -80,6 +104,7 @@
     var skin = b.skin || 'light';
     var wide = cols > 1;
     var live = app.live;
+    var label = noMap[app.id] || app.no;
     var name = live
       ? '<a href="' + app.url + '" target="_blank" rel="noopener">' + app.name + '</a>'
       : app.name;
@@ -100,7 +125,7 @@
       ' data-id="' + app.id + '" data-cat="' + app.category + '"' +
       ' data-cols="' + cols + '" data-rows="' + rows + '" data-skin="' + skin + '">' +
       '<div class="card-top">' +
-        '<span class="card-no">No.' + (app.no < 10 ? '0' + app.no : app.no) + '</span>' +
+        '<span class="card-no">No.' + (label < 10 ? '0' + label : label) + '</span>' +
         '<span class="card-cat">' + CAT_LABEL[app.category] + '</span>' +
         badgeHtml(app) +
       '</div>' +
@@ -123,13 +148,27 @@
   }
 
   function renderCards() {
-    var list = C.filterApps(D.apps, {
+    var shelf = visibleApps();
+    noMap = {};
+    shelf.slice().sort(function (a, b) { return a.no - b.no; }).forEach(function (a, i) { noMap[a.id] = i + 1; });
+    var list = C.filterApps(shelf, {
       category: state.category, query: state.query, liveOnly: state.liveOnly
     });
     var grid = $('#app-grid');
     grid.innerHTML = list.map(cardHtml).join('');
     grid.hidden = list.length === 0;
     $('#empty-state').hidden = list.length !== 0;
+
+    /* 영어 화면에서 검색어가 숨겨 둔 한국 전용 카드에만 걸리면, 빈 결과 대신
+       그 9종을 꺼내는 버튼을 보여 줍니다. */
+    var hiddenHit = 0;
+    if (!koreaOn()) {
+      hiddenHit = C.filterApps(hiddenKorea(), {
+        category: state.category, query: state.query, liveOnly: state.liveOnly
+      }).length;
+    }
+    var koreaHint = $('#empty-korea');
+    if (koreaHint) koreaHint.hidden = !(list.length === 0 && hiddenHit > 0);
 
     var bits = [];
     if (state.query) bits.push('“' + state.query + '”');
@@ -145,7 +184,7 @@
 
   /* ------------------------------------------------------------ 절약액 */
   function renderSavingsTable() {
-    $('#savings-body').innerHTML = FREE.map(function (a) {
+    $('#savings-body').innerHTML = freeVisible().map(function (a) {
       var on = state.picks.indexOf(a.id) >= 0;
       return '<tr data-id="' + a.id + '"' + (on ? '' : ' class="off"') + '>' +
         '<td class="col-check"><input class="check" type="checkbox" data-pick="' + a.id + '"' +
@@ -172,7 +211,7 @@
   }
 
   function updateSavings() {
-    var s = C.savings(D.apps, state.picks);
+    var s = C.savings(visibleApps(), state.picks);
     renderReceipt();
     applySavings(s);
   }
@@ -191,7 +230,7 @@
     $('#receipt-yearly').textContent = krw(s.yearly);
     $('#receipt-count').textContent = s.count + tr('종', ' tools');
 
-    var restPicked = RECEIPT_REST.filter(function (a) { return state.picks.indexOf(a.id) >= 0; });
+    var restPicked = receiptRest().filter(function (a) { return state.picks.indexOf(a.id) >= 0; });
     var restSum = restPicked.reduce(function (sum, a) { return sum + a.replaces.price; }, 0);
     var restPrice = $('#receipt-lines .rl-rest .rl-price');
     if (restPrice) restPrice.textContent = num(restSum);
@@ -199,18 +238,26 @@
     if (noPick) noPick.hidden = s.count !== 0;
 
     var all = $('#pick-all'), none = $('#pick-none');
-    all.disabled = (s.count === FREE.length);
+    all.disabled = (s.count === freeVisible().length);
     none.disabled = (s.count === 0);
   }
 
   /* 영수증 타일: 요금 큰 4종을 고정으로 보여 주고, 체크를 풀면 그 도구가 계산에서 빠집니다. */
-  var RECEIPT_TOP = FREE.slice().sort(function (a, b) {
-    return b.replaces.price - a.replaces.price || a.no - b.no;
-  }).slice(0, 4);
-  var RECEIPT_REST = FREE.filter(function (a) { return RECEIPT_TOP.indexOf(a) < 0; });
+  function receiptTop() {
+    return freeVisible().slice().sort(function (a, b) {
+      return b.replaces.price - a.replaces.price || a.no - b.no;
+    }).slice(0, 4);
+  }
+
+  function receiptRest() {
+    var top = receiptTop();
+    return freeVisible().filter(function (a) { return top.indexOf(a) < 0; });
+  }
 
   function renderReceipt() {
-    var rows = RECEIPT_TOP.map(function (a) {
+    var top = receiptTop();
+    var rest = receiptRest();
+    var rows = top.map(function (a) {
       var on = state.picks.indexOf(a.id) >= 0;
       return '<li><label class="rl" data-row="' + a.id + '">' +
         '<input class="rl-check" type="checkbox" data-pick="' + a.id + '"' + (on ? ' checked' : '') +
@@ -218,7 +265,7 @@
         '<span class="rl-name">' + a.name + '</span>' +
         '<span class="rl-price">' + num(a.replaces.price) + '</span></label></li>';
     });
-    rows.push('<li class="rl-rest"><span class="rl-name rl-more">' + tr('외 ' + RECEIPT_REST.length + '종', 'and ' + RECEIPT_REST.length + ' more') + '</span>' +
+    rows.push('<li class="rl-rest"><span class="rl-name rl-more">' + tr('외 ' + rest.length + '종', 'and ' + rest.length + ' more') + '</span>' +
       '<span class="rl-price">0</span></li>');
     rows.push('<li class="rl-rest rl-none" hidden><span class="rl-name rl-more">선택한 도구가 없습니다</span></li>');
     $('#receipt-lines').innerHTML = rows.join('');
@@ -228,7 +275,7 @@
         togglePick(box.getAttribute('data-pick'), box.checked);
         syncPickBoxes();
         syncReceiptRows();
-        applySavings(C.savings(D.apps, state.picks));
+        applySavings(C.savings(visibleApps(), state.picks));
       });
     });
   }
@@ -288,6 +335,16 @@
     $$('#filter-chips .chip').forEach(function (b) {
       b.setAttribute('aria-pressed', b.getAttribute('data-cat') === 'all' ? 'true' : 'false');
     });
+    /* 영어 화면에서 5단계가 집어 둔 한국 전용 카드를 가리키면, 먼저 9종을 꺼냅니다. */
+    var target = D.apps.filter(function (a) { return a.slug === slug; })[0];
+    if (target && isKoreaOnly(target) && !koreaOn()) {
+      state.koreaTools = true;
+      syncKoreaSwitch();
+      renderChips();
+      renderSavingsTable();
+      refreshNumbers();
+      updateSavings();
+    }
     renderCards();
     var card = document.getElementById('app-' + slug);
     if (!card) return;
@@ -325,7 +382,7 @@
   function fillToolSelect() {
     var sel = $('#f-tool');
     var opts = ['<option value="">고르세요</option>'];
-    D.apps.forEach(function (a) { opts.push('<option value="' + a.name + '">' + a.name + '</option>'); });
+    visibleApps().forEach(function (a) { opts.push('<option value="' + a.name + '">' + a.name + '</option>'); });
     opts.push('<option value="여러 개 · 전체">여러 개 · 전체</option>');
     opts.push('<option value="새 도구 설계">새 도구 설계</option>');
     sel.innerHTML = opts.join('');
@@ -574,15 +631,54 @@
   }
 
   /* ------------------------------------------------------------ 시작 */
-  function boot() {
-    var live = C.liveCount(FREE);
-    $('#live-pill').innerHTML = '<i aria-hidden="true"></i><b>' + live + '</b>종 라이브';
+  function refreshNumbers() {
+    var live = C.liveCount(freeVisible());
+    $('#live-pill').innerHTML = '<i aria-hidden="true"></i><b>' + live + '</b>' + tr('종 라이브', ' live');
     var status = $('#status-line');
     if (status) {
       status.textContent = tr(live + '종 모두 지금 바로 열 수 있습니다.', 'All ' + live + ' tools open right now.');
     }
     var toolsStat = $('#stat-tools');
-    if (toolsStat) toolsStat.textContent = String(FREE.length);
+    if (toolsStat) toolsStat.textContent = String(freeVisible().length);
+  }
+
+  /* 한국어 화면은 31장 전부라 스위치가 필요 없습니다. */
+  function syncKoreaSwitch() {
+    var wrap = $('#korea-switch');
+    if (!wrap) return;
+    wrap.hidden = ko();
+    var box = $('#korea-only');
+    if (box) box.checked = koreaOn();
+  }
+
+  function refreshAll() {
+    syncKoreaSwitch();
+    renderChips();
+    renderCards();
+    renderSavingsTable();
+    renderSteps();
+    renderTiers();
+    renderFaq();
+    fillToolSelect();
+    refreshNumbers();
+    updateSavings();
+  }
+
+  /* 한국 전용 9종을 꺼내면 계산에도 새로 나타난 9종을 더합니다. 전에 보이던
+     도구를 일부러 체크 해제했던 건 그대로 두고, 집어 넣을 때는 그 9종만 뺍니다. */
+  function setKorea(on) {
+    state.koreaTools = !!on;
+    var keep = {};
+    state.picks.forEach(function (id) { keep[id] = true; });
+    state.picks = freeVisible().filter(function (a) {
+      if (keep[a.id]) return true;
+      return state.koreaTools && KOREA_ONLY.indexOf(a.id) >= 0;
+    }).map(function (a) { return a.id; });
+    refreshAll();
+  }
+
+  function boot() {
+    state.picks = freeVisible().map(function (a) { return a.id; });
     $('#foot-version').textContent = 'v' + D.meta.version;
 
     renderChips();
@@ -593,29 +689,27 @@
     renderFaq();
     bindSearch();
     bindForm();
+    syncKoreaSwitch();
+    refreshNumbers();
 
     $('#pick-all').addEventListener('click', function () {
-      setPicks(FREE.map(function (a) { return a.id; }));
+      setPicks(freeVisible().map(function (a) { return a.id; }));
     });
     $('#pick-none').addEventListener('click', function () {
       setPicks([]);
     });
 
+    var koreaBox = $('#korea-only');
+    if (koreaBox) {
+      koreaBox.addEventListener('change', function () { setKorea(koreaBox.checked); });
+    }
+    var koreaEmpty = $('#empty-korea');
+    if (koreaEmpty) {
+      koreaEmpty.addEventListener('click', function () { setKorea(true); });
+    }
+
     updateSavings();
-    document.addEventListener('langchange', function () {
-      renderChips();
-      renderCards();
-      renderSavingsTable();
-      renderSteps();
-      renderTiers();
-      renderFaq();
-      fillToolSelect();
-      var live = C.liveCount(FREE);
-      $('#live-pill').innerHTML = '<i aria-hidden="true"></i><b>' + live + '</b>' + tr('종 라이브', ' live');
-      var status = $('#status-line');
-      if (status) status.textContent = tr(live + '종 모두 지금 바로 열 수 있습니다.', 'All ' + live + ' tools open right now.');
-      updateSavings();
-    });
+    document.addEventListener('langchange', refreshAll);
     document.documentElement.setAttribute('data-hub-ready', '1');
   }
 

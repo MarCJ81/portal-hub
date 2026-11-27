@@ -17,6 +17,21 @@
   var CONTACT_EMAIL = '';           // 예: 'hello@example.com' — 비워 두면 복사 전용으로 동작
   var CONTACT_LABEL = '운영자 메일';  // 화면에 보이는 수신자 표기
 
+  /* 한국 전용 9종 — 연말정산·퇴직금·급여·부가세, HWPX 변환, 한국 표시광고법,
+     국내 시세, 네이버·스마트스토어 SEO. 영어(EN) 화면에서는 기본으로 접어 두고
+     토글로만 꺼내 보여 줍니다. 한국어 화면은 31장 전부 그대로입니다. */
+  var KOREA_ONLY = [
+    'yearend-tax-reverse',
+    'severance-leave-calculator',
+    'payslip-calculator',
+    'tax-margin-calculator',
+    'onetap-hwpx-converter',
+    'ad-law-checker',
+    'price-radar-kr',
+    'blog-seo-studio',
+    'commerce-seo-studio'
+  ];
+
   var CATEGORIES = [
     { id: 'all', label: '전체', note: '31장' },
     { id: 'content', label: '콘텐츠·SNS', note: '9종' },
@@ -436,6 +451,7 @@
   var DATA = {
     contactEmail: CONTACT_EMAIL,
     contactLabel: CONTACT_LABEL,
+    koreaOnly: KOREA_ONLY,
     categories: CATEGORIES,
     apps: APPS,
     steps: STEPS,
@@ -450,7 +466,7 @@
       total: APPS.length,
       free: APPS.filter(function (a) { return !a.offer; }).length,
       live: APPS.filter(function (a) { return a.live; }).length,
-      version: '2.5.0',
+      version: '2.5.1',
       checked: '2026-11-25'
     }
   };
