@@ -684,7 +684,13 @@
       title: '30 free tools for solo founders and marketers | OneTap Tools',
       description: 'Thirty free web apps for one-person businesses and marketers: keyword research, blog drafts, card news, short-form video, thumbnails, vector conversion, review replies, ad copy checks, quotes, price comparison, proof-of-work reports, PDF signing, payslips, tax, severance and year-end settlement, privacy and phishing checks, an AI team room, an ad audit studio, a clip factory, an HWPX converter and a web app shield. Zero uploads, no sign-up, no subscription.',
       ogTitle: 'Thirty free tools you keep for life',
-      ogDescription: 'Zero uploads · no sign-up · your own AI subscription. Thirty free web apps for solo founders and marketers.'
+      ogDescription: 'Zero uploads · no sign-up · your own AI subscription. Thirty free web apps for solo founders and marketers.',
+      pages: {
+        privacy: {
+          title: 'Privacy policy | OneTap Tools',
+          description: 'How the OneTap Tools hub handles information: thirty tools with no server, an enquiry form that only drafts a message, and nothing collected behind your back.'
+        }
+      }
     }
   };
 
@@ -842,7 +848,9 @@
         ogDescription: (document.querySelector('meta[property="og:description"]') || {}).content || ''
       };
     }
-    var pack = isOther() ? META[OTHER_LANG] : null;
+    var pageKey = /privacy\.html/.test(location.pathname) ? 'privacy' : 'home';
+    var other = isOther() ? META[OTHER_LANG] : null;
+    var pack = other && other.pages && other.pages[pageKey] ? other.pages[pageKey] : other;
     document.title = pack ? pack.title : metaOrig.title;
     setMeta('name', 'description', pack ? pack.description : metaOrig.description);
     setMeta('property', 'og:title', pack ? pack.ogTitle : metaOrig.ogTitle);
