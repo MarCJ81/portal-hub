@@ -27,10 +27,10 @@
     '종 라이브': ' live',
     '제작 문의': 'Build enquiry',
     '무료 도구 · 서버 0 · 가입 0 ·': 'Free tools · zero servers · zero sign-up ·',
-    '월 구독료 없이 평생 쓰는': 'Free tools you keep for life,',
+    '월 구독료 없이 평생 쓰는': 'No subscription, ever.',
     '1인 사업자·마케터': 'for solo founders and marketers',
     '무료 도구': 'Free tools',
-    '30선': '30 picks',
+    '30선': 'yours to keep',
     '키워드 발굴부터 블로그 원고, 카드뉴스, 숏폼 영상, 썸네일, 인쇄용 벡터 변환, 리뷰 답글, 광고 문구 검수, 견적서와 수리 시세 비교, 작업 증빙 리포트, 계약서 서명, 급여명세서와 세금·퇴직금·연말정산 정산, 개인정보·피싱 점검, AI 팀 회의실과 광고비 감사, 긴 영상에서 9:16 클립을 뽑는 클립 팩토리, HWPX를 HWP로 바꾸는 변환기, AI로 만든 웹앱의 구멍을 잡는 웹앱 실드까지. 30개 도구가 브라우저 안에서만 돌아갑니다.':
       'From keyword research to blog drafts, card news, short-form video, thumbnails, print-ready vector conversion, review replies, ad copy checks, quotes and repair price comparisons, proof-of-work reports, contract signing, payslips and tax, severance and year-end settlement, privacy and phishing checks, an AI team room and ad-spend audit, a clip factory that cuts 9:16 clips from long video, an HWPX-to-HWP converter and a web app shield that finds the holes in AI-built apps. Thirty tools, all running inside your browser.',
     '도구 31종 열기': 'Open the 31 tools',
@@ -51,16 +51,16 @@
     '합계': 'Total',
     '0원': '₩0',
     '이 허브에서': 'Here',
-    '구독료': 'Subscription',
+    '구독료': 'FEES',
     '30종': '30 tools',
-    '기준 · 1인 · 공개 요금제 참고값.': 'basis · one seat · public list prices.',
-    '연': 'Yearly',
-    '이 사라집니다.': 'disappears.',
+    '기준 · 1인 · 공개 요금제 참고값.': ' basis · one seat · public list prices.',
+    '연': 'Yearly ',
+    '이 사라집니다.': ' disappears.',
     '줄을 눌러 하나씩 지워 보기': 'Tap a line to cross it out',
-    '종': 'tools',
+    '종': ' tools',
     '+ 백오피스 오퍼 1장': '+ 1 back-office offer',
     '한 달에 사라지는 구독료': 'Subscription fees gone each month',
-    '원': 'KRW',
+    '원': '',
     '서버로 가는 입력값': 'Input sent to a server',
     '건': '',
     '전부 이 브라우저에서': 'All in this browser',
@@ -651,6 +651,7 @@
   var current = DEFAULT_LANG;
   var textOrig = new Map();
   var attrOrig = new WeakMap();
+  var enOrig = new WeakMap();
   var htmlOrig = new Map();
   var metaOrig = null;
 
@@ -743,6 +744,11 @@
     if (root.hasAttribute && root.hasAttribute('data-ko-html')) {
       if (!htmlOrig.has(root)) htmlOrig.set(root, root.innerHTML);
       root.innerHTML = isOther() ? root.getAttribute('data-ko-html') : htmlOrig.get(root);
+      return;
+    }
+    if (root.hasAttribute && root.hasAttribute('data-en')) {
+      if (!enOrig.has(root)) enOrig.set(root, root.textContent);
+      root.textContent = isOther() ? root.getAttribute('data-en') : enOrig.get(root);
       return;
     }
     textNodes(root).forEach(translateTextNode);

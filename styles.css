@@ -1093,3 +1093,9 @@ html.install-open{overflow:hidden}
   .lang-switch{order:-1}
   .lang-btn{padding:8px 8px;font-size:11.5px}
 }
+
+/* English money strings set tighter than Korean: keep the ₩ glyph clear of the digits. */
+html[lang="en"] .receipt-fig strong,
+html[lang="en"] .fig-value,
+html[lang="en"] .stat b,
+html[lang="en"] .rl-price{letter-spacing:0}
