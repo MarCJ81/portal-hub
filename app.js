@@ -26,7 +26,14 @@
     picks: FREE.map(function (a) { return a.id; })
   };
 
-  function num(n) { return C.fmtKRW(n).replace('원', ''); }
+  function ko() { return !(window.OneTapLang && window.OneTapLang.current) || window.OneTapLang.current() === 'ko'; }
+  function tr(koText, enText) { return ko() ? koText : enText; }
+  function nm(s) { return (window.OneTapLang && window.OneTapLang.t) ? window.OneTapLang.t(s) : s; }
+  function krw(n) {
+    var v = Number(n) || 0;
+    return ko() ? C.fmtKRW(v) : '₩' + v.toLocaleString('en-US');
+  }
+  function num(n) { return ko() ? C.fmtKRW(n).replace('원', '') : Number(n || 0).toLocaleString('en-US'); }
 
   /* ------------------------------------------------------------ 필터 칩 */
   function renderChips() {
@@ -53,8 +60,8 @@
   function badgeHtml(app) {
     var out = '';
     if (app.offer) {
-      out += '<span class="card-badge offer" title="사람이 붙는 유료 대행 서비스입니다">유료 서비스' +
-        (app.price ? ' · ' + app.price : '') + '</span>';
+      out += '<span class="card-badge offer" title="' + tr('사람이 붙는 유료 대행 서비스입니다', 'A paid service with a person behind it') + '">' +
+        tr('유료 서비스', 'Paid service') + (app.price ? ' · ' + nm(app.price) : '') + '</span>';
     } else if (app.badge === 'NEW') {
       out += '<span class="card-badge new">NEW</span>';
     } else if (app.badge === 'LIVE') {
@@ -78,13 +85,13 @@
       : app.name;
     var cta = live
       ? '<a class="card-cta" href="' + app.url + '" target="_blank" rel="noopener" aria-label="' +
-        app.name + ' 새 창에서 열기">' + (app.offer ? '안내 보기' : '지금 열기') +
+        nm(app.name) + tr(' 새 창에서 열기', ' — open in a new tab') + '">' + tr(app.offer ? '안내 보기' : '지금 열기', app.offer ? 'See details' : 'Open now') +
         ' <span aria-hidden="true">↗</span></a>'
       : '<button type="button" class="card-cta pending" data-prefill="' + app.id + '">먼저 써 보기</button>';
     var price = app.replaces
-      ? '<p class="card-price"><span>대체 예시 · ' + app.replaces.name + '</span>' +
-        '<b>월 ' + C.fmtKRW(app.replaces.price) + '</b></p>'
-      : (app.price ? '<p class="card-price"><span>대행 요금</span><b>' + app.price + '</b></p>' : '');
+      ? '<p class="card-price"><span>' + tr('대체 예시 · ', 'Replaces · ') + nm(app.replaces.name) + '</span>' +
+        '<b>' + tr('월 ', '') + krw(app.replaces.price) + tr('', '/mo') + '</b></p>'
+      : (app.price ? '<p class="card-price"><span>' + tr('대행 요금', 'Service fee') + '</span><b>' + nm(app.price) + '</b></p>' : '');
     var metric = app.metric && wide
       ? '<p class="card-metric"><b>' + app.metric.value + '</b><span>' + app.metric.label + '</span></p>'
       : '';
@@ -109,7 +116,8 @@
       '<div class="card-foot">' + price +
         '<div class="card-cta-wrap">' + cta +
         '<button type="button" class="card-ask" data-prefill="' + app.id + '" aria-label="' +
-        app.name + ' 우리 회사용으로 제작 문의">커스텀 제작 문의</button></div>' +
+        nm(app.name) + tr(' 우리 회사용으로 제작 문의', ' — ask about a build for our company') + '">' +
+        tr('커스텀 제작 문의', 'Ask about a custom build') + '</button></div>' +
       '</div>' +
       '</article>';
   }
@@ -127,7 +135,7 @@
     if (state.query) bits.push('“' + state.query + '”');
     if (state.category !== 'all') bits.push(CAT_LABEL[state.category]);
     if (state.liveOnly) bits.push('지금 열 수 있는 도구');
-    $('#result-count').textContent = (bits.length ? bits.join(' · ') + ' — ' : '') + list.length + '장';
+    $('#result-count').textContent = (bits.length ? bits.join(' · ') + ' — ' : '') + list.length + tr('장', ' cards');
     $('#search-clear').hidden = !state.query;
 
     $$('[data-prefill]', grid).forEach(function (btn) {
@@ -141,10 +149,10 @@
       var on = state.picks.indexOf(a.id) >= 0;
       return '<tr data-id="' + a.id + '"' + (on ? '' : ' class="off"') + '>' +
         '<td class="col-check"><input class="check" type="checkbox" data-pick="' + a.id + '"' +
-        (on ? ' checked' : '') + ' aria-label="' + a.name + ' 절약 계산에 포함"></td>' +
+        (on ? ' checked' : '') + ' aria-label="' + nm(a.name) + tr(' 절약 계산에 포함', ' — include in savings') + '"></td>' +
         '<td><span class="tool-name">' + a.name + '<small>' + CAT_LABEL[a.category] + '</small></span></td>' +
         '<td>' + a.replaces.name + '</td>' +
-        '<td class="col-price">' + C.fmtKRW(a.replaces.price) + '</td>' +
+        '<td class="col-price">' + krw(a.replaces.price) + '</td>' +
         '</tr>';
     }).join('');
 
@@ -173,15 +181,15 @@
   function applySavings(s) {
     $('#sum-monthly').textContent = num(s.monthly);
     $('#sum-yearly').textContent = num(s.yearly);
-    $('#sum-monthly-sub').textContent = '선택 ' + s.count + '종 · 1인';
+    $('#sum-monthly-sub').textContent = tr('선택 ' + s.count + '종 · 1인', s.count + ' tools · one seat');
     $('#pick-count').textContent = s.count;
-    $('#savings-foot').textContent = C.fmtKRW(s.monthly);
+    $('#savings-foot').textContent = krw(s.monthly);
     var statMonth = $('#stat-month'), statYear = $('#stat-year');
     if (statMonth) statMonth.textContent = num(s.monthly);
     if (statYear) statYear.textContent = num(s.yearly);
-    $('#receipt-total').textContent = C.fmtKRW(s.monthly);
-    $('#receipt-yearly').textContent = C.fmtKRW(s.yearly);
-    $('#receipt-count').textContent = s.count + '종';
+    $('#receipt-total').textContent = krw(s.monthly);
+    $('#receipt-yearly').textContent = krw(s.yearly);
+    $('#receipt-count').textContent = s.count + tr('종', ' tools');
 
     var restPicked = RECEIPT_REST.filter(function (a) { return state.picks.indexOf(a.id) >= 0; });
     var restSum = restPicked.reduce(function (sum, a) { return sum + a.replaces.price; }, 0);
@@ -206,11 +214,11 @@
       var on = state.picks.indexOf(a.id) >= 0;
       return '<li><label class="rl" data-row="' + a.id + '">' +
         '<input class="rl-check" type="checkbox" data-pick="' + a.id + '"' + (on ? ' checked' : '') +
-        ' aria-label="' + a.name + ' 구독료 지우기">' +
+        ' aria-label="' + nm(a.name) + tr(' 구독료 지우기', ' — remove fee') + '">' +
         '<span class="rl-name">' + a.name + '</span>' +
         '<span class="rl-price">' + num(a.replaces.price) + '</span></label></li>';
     });
-    rows.push('<li class="rl-rest"><span class="rl-name rl-more">외 ' + RECEIPT_REST.length + '종</span>' +
+    rows.push('<li class="rl-rest"><span class="rl-name rl-more">' + tr('외 ' + RECEIPT_REST.length + '종', 'and ' + RECEIPT_REST.length + ' more') + '</span>' +
       '<span class="rl-price">0</span></li>');
     rows.push('<li class="rl-rest rl-none" hidden><span class="rl-name rl-more">선택한 도구가 없습니다</span></li>');
     $('#receipt-lines').innerHTML = rows.join('');
@@ -260,7 +268,7 @@
         '<p class="step-no">' + s.no + '<small>STEP</small></p>' +
         '<div class="step-main"><h3 class="step-title">' + s.title + '</h3>' +
         '<p class="step-lead">' + s.lead + '</p></div>' +
-        '<div class="step-side"><p class="step-out">결과물 <b>' + s.output + '</b></p>' +
+        '<div class="step-side"><p class="step-out">' + tr('결과물', 'Output') + ' <b>' + nm(s.output) + '</b></p>' +
         '<div class="step-apps">' + apps.map(function (a) {
           return '<button type="button" class="step-app" data-goto="' + a.slug + '">' + a.name + '</button>';
         }).join('') + '</div></div></li>';
@@ -571,7 +579,7 @@
     $('#live-pill').innerHTML = '<i aria-hidden="true"></i><b>' + live + '</b>종 라이브';
     var status = $('#status-line');
     if (status) {
-      status.textContent = live + '종 모두 지금 바로 열 수 있습니다.';
+      status.textContent = tr(live + '종 모두 지금 바로 열 수 있습니다.', 'All ' + live + ' tools open right now.');
     }
     var toolsStat = $('#stat-tools');
     if (toolsStat) toolsStat.textContent = String(FREE.length);
@@ -594,6 +602,20 @@
     });
 
     updateSavings();
+    document.addEventListener('langchange', function () {
+      renderChips();
+      renderCards();
+      renderSavingsTable();
+      renderSteps();
+      renderTiers();
+      renderFaq();
+      fillToolSelect();
+      var live = C.liveCount(FREE);
+      $('#live-pill').innerHTML = '<i aria-hidden="true"></i><b>' + live + '</b>' + tr('종 라이브', ' live');
+      var status = $('#status-line');
+      if (status) status.textContent = tr(live + '종 모두 지금 바로 열 수 있습니다.', 'All ' + live + ' tools open right now.');
+      updateSavings();
+    });
     document.documentElement.setAttribute('data-hub-ready', '1');
   }
 
